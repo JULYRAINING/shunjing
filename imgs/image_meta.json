@@ -1,0 +1,418 @@
+[
+  {
+    "query": "北京豪华公寓室内装修效果图",
+    "image_info": {
+      "url": "https://amazingarchitecture.com/storage/2437/home_of_finance_elites_rui_design_beijing_china.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 195953,
+      "width": 1344,
+      "height": 756,
+      "total_pixels": 1016064,
+      "basic_score": 0.9423166644325855,
+      "file_name": "luxury-beijing-apartment-interior-living-room-design.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 95.0,
+      "clarity_score": 90.0,
+      "watermark_score": 100.0,
+      "overall_score": 92.0,
+      "explanation": "The image perfectly matches the search query and prompt. It depicts a spacious, high-end living area with sophisticated lighting, custom joinery, and modern furniture that aligns well with luxury interior design trends in major Chinese cities like Beijing. The image is sharp, professionally composed, and free of watermarks.",
+      "file_name": "luxury-beijing-apartment-interior-living-room-design.jpg",
+      "caption": "A spacious luxury apartment living room featuring modern low-profile modular floor seating, expansive dark custom shelving with decorative art pieces, and elegant cove ceiling lighting.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "北京豪华公寓室内装修效果图",
+    "image_info": {
+      "url": "https://www.designboom.com/wp-content/dbsub/409663/2022-06-29/one-sanlitun-c2b7-bottega-veneta-by-ccd-1-62bc2c0e42354.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 174015,
+      "width": 818,
+      "height": 1028,
+      "total_pixels": 840904,
+      "basic_score": 0.9135201721973211,
+      "file_name": "beijing-luxury-apartment-sculptural-staircase-interior.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 95.0,
+      "clarity_score": 90.0,
+      "watermark_score": 100.0,
+      "overall_score": 92.0,
+      "explanation": "The image perfectly matches the search query and prompt, depicting a high-end, luxurious interior likely intended for the Beijing market. The architectural rendering is of professional quality, showcasing a striking sculptural staircase and premium materials like marble and modern furnishings. The cityscape in the background reinforces the urban luxury theme. The image is crisp, clean, and free of watermarks.",
+      "file_name": "beijing-luxury-apartment-sculptural-staircase-interior.jpg",
+      "caption": "A magnificent interior view of a luxury Beijing apartment featuring a large, artistic white spiral staircase, marble flooring, and a modern living area with floor-to-ceiling windows overlooking a city skyline.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "北京豪华公寓室内装修效果图",
+    "image_info": {
+      "url": "https://www.sbid.org/wp-content/uploads/2021/08/Cheng-Chung-Design-One-Sanlitun-Fendi-2.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 137135,
+      "width": 1200,
+      "height": 750,
+      "total_pixels": 900000,
+      "basic_score": 0.9302958826421519,
+      "file_name": "luxury-penthouse-interior-beijing-marble-floor-city-view.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 95.0,
+      "clarity_score": 90.0,
+      "watermark_score": 100.0,
+      "overall_score": 95.0,
+      "explanation": "The image perfectly depicts a high-end luxury apartment interior, likely a penthouse, featuring premium materials like marble and velvet. The panoramic city view fits the context of Beijing. The composition is professional, sharp, and visually striking with no visible watermarks.",
+      "file_name": "luxury-penthouse-interior-beijing-marble-floor-city-view.jpg",
+      "caption": "Expansive luxury apartment interior in Beijing featuring a sleek marble fireplace, polished floors, and floor-to-ceiling windows overlooking the city skyline, with a modern dining area and lounge seating.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "北京豪华公寓室内装修效果图",
+    "image_info": {
+      "url": "https://images.squarespace-cdn.com/content/v1/57058af18a65e2f19709cb0d/1658447523199-T80WGYZT3FXT7W2NQVJZ/16.jpg?format=2500w",
+      "img_format": "WEBP",
+      "mode": "RGB",
+      "file_size": 114878,
+      "width": 1200,
+      "height": 791,
+      "total_pixels": 949200,
+      "basic_score": 0.9439706127277406,
+      "file_name": "luxury_beijing_apartment_interior_sunset_skyline.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 95.0,
+      "clarity_score": 90.0,
+      "watermark_score": 100.0,
+      "overall_score": 95.0,
+      "explanation": "The image perfectly matches the search query for a luxury apartment interior in Beijing. It showcases high-end furniture, sophisticated lighting, and floor-to-ceiling windows revealing a dense urban skyline consistent with a major metropolis. The image is sharp, professionally composed, and free of watermarks.",
+      "file_name": "luxury_beijing_apartment_interior_sunset_skyline.jpg",
+      "caption": "A luxurious high-rise apartment interior featuring a chic living area with a leather sofa, trunk-style coffee table, and elegant bar, backdropped by a panoramic view of the city skyline at sunset.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "北京豪华公寓室内装修效果图",
+    "image_info": {
+      "url": "https://static1.mansionglobal.com/production/media/article-images/aafd83b525d1c94349147823168f39b3/large_Beijing_1.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 221895,
+      "width": 902,
+      "height": 600,
+      "total_pixels": 541200,
+      "basic_score": 0.8809568419146812,
+      "file_name": "beijing-luxury-apartment-living-room-interior-design.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 95.0,
+      "clarity_score": 90.0,
+      "watermark_score": 100.0,
+      "overall_score": 92.0,
+      "explanation": "The image perfectly matches the search query, depicting an opulent, high-end living room style characteristic of luxury real estate markets in major cities like Beijing. The lighting, composition, and detailing (ceiling, chandelier, furniture) are professional quality. There are no visible watermarks.",
+      "file_name": "beijing-luxury-apartment-living-room-interior-design.jpg",
+      "caption": "A luxurious living room interior featuring a large crystal chandelier, elaborate tray ceiling, tufted beige Chesterfield sofas, and rich wood paneling, representative of high-end apartment designs in Beijing.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "现代豪华住宅建筑外观设计图",
+    "image_info": {
+      "url": "https://amazingarchitecture.com/storage/files/1742/architecture-projects/kiki-archi/classic-meets-modern/12-classic_meets_modern_kiki_archi_beijing.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 145155,
+      "width": 1500,
+      "height": 1000,
+      "total_pixels": 1500000,
+      "basic_score": 0.8815032566630897,
+      "file_name": "modern-luxury-residential-courtyard-design-beijing.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 90.0,
+      "clarity_score": 95.0,
+      "watermark_score": 100.0,
+      "overall_score": 92.0,
+      "explanation": "The image is an excellent representation of modern, luxury residential architecture, characterized by minimalist white facades, extensive use of glass, and a sophisticated courtyard layout. The lighting and composition are professional, highlighting the interplay of shadows and structure. It aligns perfectly with the request for exterior design visuals.",
+      "file_name": "modern-luxury-residential-courtyard-design-beijing.jpg",
+      "caption": "Exterior view of a modern luxury residence featuring a minimalist white facade, a glass-enclosed extension, and a sunken courtyard garden with architectural landscaping.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "高端温泉酒店室内设计效果图，亚洲风情风格",
+    "image_info": {
+      "url": "https://media.cntraveler.com/photos/53e2e14bc2d3f39d36107372/master/w_1600%2Cc_limit/Resort-Design-Detail-Jade.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 50102,
+      "width": 506,
+      "height": 398,
+      "total_pixels": 201388,
+      "basic_score": 0.7508588009940607,
+      "file_name": "luxury-hot-spring-hotel-lobby-onyx-pillars-stone-art.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 90.0,
+      "clarity_score": 85.0,
+      "watermark_score": 100.0,
+      "overall_score": 88.0,
+      "explanation": "The image perfectly matches the search query for a luxury hot spring hotel interior. The use of backlit onyx, polished marble, and the massive raw stone centerpiece strongly evokes the high-end, nature-connected aesthetic typical of luxury Asian resorts. The lighting is dramatic and warm, enhancing the luxurious feel.",
+      "file_name": "luxury-hot-spring-hotel-lobby-onyx-pillars-stone-art.jpg",
+      "caption": "A grand hotel lobby featuring a massive raw stone sculpture centerpiece, polished marble floors, and glowing backlit onyx pillars under a sweeping, crystal-adorned ceiling.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "高端温泉酒店室内设计效果图，亚洲风情风格",
+    "image_info": {
+      "url": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/742609633.jpg?k=27f0858668907dcb16f5f21f08163ebee0545d7e97d44b91cb6ddd6f504a7a21&o=",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 119004,
+      "width": 1024,
+      "height": 768,
+      "total_pixels": 786432,
+      "basic_score": 0.9189851714890972,
+      "file_name": "luxury-wooden-hot-spring-tub-hotel-suite-beijing.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 90.0,
+      "clarity_score": 85.0,
+      "watermark_score": 100.0,
+      "overall_score": 88.0,
+      "explanation": "The image strongly aligns with the search query for a luxury hot spring hotel. The wooden soaking tub with flower petals and the glass-enclosed sauna creates a high-end spa atmosphere typical of luxury accommodation. The heating radiators under the windows are architecturally consistent with buildings in Beijing (Northern China). The inclusion of wine and greenery enhances the 'Asian style' relaxation vibe requested in the prompt.",
+      "file_name": "luxury-wooden-hot-spring-tub-hotel-suite-beijing.jpg",
+      "caption": "A light-filled luxury hotel suite featuring a large wooden soaking tub with rose petals and two glasses of red wine, adjacent to a glass-walled sauna and lush indoor plants.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "高端温泉酒店室内设计效果图，亚洲风情风格",
+    "image_info": {
+      "url": "https://media.cntraveler.com/photos/53e2e14cdddaa35c30f61ffc/master/w_1600%2Cc_limit/Resort-Lobby.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 51838,
+      "width": 506,
+      "height": 398,
+      "total_pixels": 201388,
+      "basic_score": 0.751147658558605,
+      "file_name": "luxury_asian_hotel_lobby_gold_ceiling_design.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 90.0,
+      "clarity_score": 90.0,
+      "watermark_score": 100.0,
+      "overall_score": 90.0,
+      "explanation": "The image perfectly captures the essence of a 'luxury hotel interior' with high-end materials like backlit onyx, marble floors, and a spectacular crystal ceiling. While it does not explicitly show a hot spring, the warm, ambient lighting and spacious, tranquil lobby design align well with the aesthetic of premium wellness or hot spring resorts in Asia. The contemporary artistic elements fit the 'Asian style' aspect of the prompt.",
+      "file_name": "luxury_asian_hotel_lobby_gold_ceiling_design.jpg",
+      "caption": "A magnificent hotel lobby featuring a sweeping golden crystal ceiling, backlit onyx pillars, and contemporary blue glass sculpture on a polished marble floor, embodying modern Asian luxury.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "高端温泉酒店室内设计效果图，亚洲风情风格",
+    "image_info": {
+      "url": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/p1g38enpklmom5evjzzp.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 107248,
+      "width": 750,
+      "height": 469,
+      "total_pixels": 351750,
+      "basic_score": 0.8103814329528789,
+      "file_name": "luxury-asian-hot-spring-hotel-interior-zen-design.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 95.0,
+      "clarity_score": 85.0,
+      "watermark_score": 60.0,
+      "overall_score": 80.0,
+      "explanation": "The image is an excellent visual match for the search query and prompt, showcasing a high-end Asian-style interior typical of luxury hot spring hotels. The composition features Zen garden elements, warm lighting, and architectural details that align perfectly with the requested aesthetic. However, the presence of a 'Klook' watermark in the bottom left corner restricts professional usage without cropping or editing.",
+      "file_name": "luxury-asian-hot-spring-hotel-interior-zen-design.jpg",
+      "caption": "A spacious, luxury hotel interior featuring a Zen rock garden with bonsai trees, light wood flooring, and Shoji-screen style ceiling lighting, creating a serene Asian-inspired atmosphere suitable for a hot spring resort.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "温泉SPA中心内部装修效果图",
+    "image_info": {
+      "url": "https://hotspringspool.com/wp-content/uploads/2024/12/GHSR_Specials_Wellness_Package.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 357207,
+      "width": 1431,
+      "height": 925,
+      "total_pixels": 1323675,
+      "basic_score": 0.931561268463617,
+      "file_name": "indoor-spa-wellness-center-hydrotherapy-pool-design.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 90.0,
+      "clarity_score": 85.0,
+      "watermark_score": 100.0,
+      "overall_score": 88.0,
+      "explanation": "The image perfectly matches the search query and prompt, depicting a well-lit indoor spa facility with a hydrotherapy pool. The interior design details, particularly the mosaic tiling and layout, are clearly visible, making it an excellent reference for interior decoration. The image is sharp, professional, and free of watermarks.",
+      "file_name": "indoor-spa-wellness-center-hydrotherapy-pool-design.jpg",
+      "caption": "Interior view of a luxury spa wellness center featuring a curved hydrotherapy pool with stainless steel handrails, intricate black and white geometric mosaic tile flooring, and large windows allowing natural light.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "温泉SPA中心内部装修效果图",
+    "image_info": {
+      "url": "https://www.pagosahotsprings.com/content/uploads/2025/05/f6f9b049-afff-4356-9e90-8a12c006d913-670x600.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 53258,
+      "width": 670,
+      "height": 600,
+      "total_pixels": 402000,
+      "basic_score": 0.8195008365193777,
+      "file_name": "luxury-cave-hot-spring-spa-starry-ceiling.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 95.0,
+      "clarity_score": 85.0,
+      "watermark_score": 100.0,
+      "overall_score": 90.0,
+      "explanation": "The image perfectly matches the search query and prompt, showcasing a unique interior design for a hot spring spa. The 'starry sky' ceiling and cave-like texture provide an excellent visual example of wellness center decoration. The composition is strong, and the image is free of watermarks.",
+      "file_name": "luxury-cave-hot-spring-spa-starry-ceiling.jpg",
+      "caption": "A man relaxing in an indoor hot spring spa pool featuring a cave-like aesthetic with textured rock walls and a ceiling illuminated by fiber optic lights resembling a starry night sky.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "温泉SPA中心内部装修效果图",
+    "image_info": {
+      "url": "https://www.pagosahotsprings.com/content/uploads/2020/12/DSC03730-3-670x600.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 65410,
+      "width": 670,
+      "height": 600,
+      "total_pixels": 402000,
+      "basic_score": 0.8210341813758796,
+      "file_name": "outdoor_hot_spring_spa_river_view_sunset.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 75.0,
+      "clarity_score": 90.0,
+      "watermark_score": 100.0,
+      "overall_score": 85.0,
+      "explanation": "The image is visually stunning and perfectly aligns with the search query for a 'hot spring spa wellness center,' capturing a relaxing atmosphere with high clarity. However, it deviates from the specific prompt asking for an 'interior decoration rendering' (内部装修效果图) as it depicts an exterior outdoor scene and appears to be a photograph rather than a design rendering. Despite this distinction, it is an excellent reference for spa ambiance.",
+      "file_name": "outdoor_hot_spring_spa_river_view_sunset.jpg",
+      "caption": "Three women relaxing in a tiered outdoor thermal pool at a luxury wellness center, overlooking a flowing river and bridge during a golden sunset.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "温泉SPA中心内部装修效果图",
+    "image_info": {
+      "url": "https://uploads.castlehotsprings.com/wp-content/uploads/2022/07/25152838/Spa-Cabanas-Explore-More-Section.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 483445,
+      "width": 650,
+      "height": 650,
+      "total_pixels": 422500,
+      "basic_score": 0.8713712790393013,
+      "file_name": "outdoor_luxury_spa_cabanas_palm_trees.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 80.0,
+      "clarity_score": 90.0,
+      "watermark_score": 100.0,
+      "overall_score": 85.0,
+      "explanation": "The image is a high-quality photograph capturing a serene outdoor spa setting, which aligns perfectly with the 'spa wellness center' portion of the search query. It shows treatment cabanas in a lush environment. However, it deviates from the specific prompt request for an 'interior decoration rendering' (内部装修效果图) as it is primarily an exterior shot and a photograph, not a 3D rendering. Additionally, no hot spring water features are explicitly visible, though the environment suggests a resort location.",
+      "file_name": "outdoor_luxury_spa_cabanas_palm_trees.jpg",
+      "caption": "High-angle view of three canvas-tented spa treatment cabanas nestled among palm trees and lush vegetation at a luxury outdoor wellness resort.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "现代化地下停车场设计效果图",
+    "image_info": {
+      "url": "https://cdnb.artstation.com/p/marketplace/presentation_assets/001/485/835/large/file.jpg?1642595717",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 351920,
+      "width": 1800,
+      "height": 1013,
+      "total_pixels": 1823400,
+      "basic_score": 0.8096164334897026,
+      "file_name": "modern-underground-parking-garage-lighting-design.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 98.0,
+      "clarity_score": 90.0,
+      "watermark_score": 100.0,
+      "overall_score": 92.0,
+      "explanation": "The image is an excellent match for both the search query and the specific prompt. It clearly depicts a high-end architectural rendering ('effect diagram') of a modern parking garage with sophisticated LED lighting, sleek materials, and polished floors. The visual quality is sharp, the perspective is wide and informative, and the image is completely free of watermarks.",
+      "file_name": "modern-underground-parking-garage-lighting-design.jpg",
+      "caption": "A 3D architectural rendering of a spacious, modern underground parking garage featuring geometric LED ceiling panels, strip lighting on concrete walls, and polished flooring reflecting luxury vehicles.",
+      "recommend": true,
+      "error": ""
+    }
+  },
+  {
+    "query": "现代化地下停车场设计效果图",
+    "image_info": {
+      "url": "https://thumbs.dreamstime.com/b/modern-underground-parking-lot-full-cars-clean-well-lit-facility-colorful-markings-ideal-urban-infrastructure-318010544.jpg",
+      "img_format": "JPEG",
+      "mode": "RGB",
+      "file_size": 46044,
+      "width": 800,
+      "height": 449,
+      "total_pixels": 359200,
+      "basic_score": 0.8071862861273458,
+      "file_name": "modern-underground-parking-garage-yellow-pillars.jpg"
+    },
+    "llm_score": {
+      "success": true,
+      "relevance_score": 95.0,
+      "clarity_score": 90.0,
+      "watermark_score": 100.0,
+      "overall_score": 92.0,
+      "explanation": "The image perfectly matches the search query for a 'modern underground parking garage'. It features a high-quality architectural rendering with professional lighting, clear spatial organization, and a distinct color palette (yellow and grey). The low-angle composition leads the eye effectively. The image appears free of obtrusive commercial watermarks or text overlays, making it excellent for design reference.",
+      "file_name": "modern-underground-parking-garage-yellow-pillars.jpg",
+      "caption": "A photorealistic rendering of a modern underground parking garage featuring bright yellow support columns, a glossy reflective floor with white directional markings, and rows of parked vehicles under a sleek overhead lighting system.",
+      "recommend": true,
+      "error": ""
+    }
+  }
+]

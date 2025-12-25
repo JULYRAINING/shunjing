@@ -6,6 +6,9 @@
     <title>顺景·石上清泉 - 数字温泉资产</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -52,6 +55,84 @@
         .data-counter {
             font-variant-numeric: tabular-nums;
         }
+        .tab-button {
+            transition: all 0.3s ease;
+        }
+        .tab-button.active {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .tab-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #d1d5db;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .tab-indicator.active {
+            background-color: #f97316;
+            transform: scale(1.2);
+        }
+        .tab-indicator:hover {
+            background-color: #9ca3af;
+        }
+        .hot-spring-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #d1d5db;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .hot-spring-indicator.active {
+            background-color: #f97316;
+            transform: scale(1.2);
+        }
+        .hot-spring-indicator:hover {
+            background-color: #9ca3af;
+        }
+        .hot-spring-tab {
+            transition: all 0.3s ease;
+        }
+        .hot-spring-tab.active {
+            transform: scale(1.05);
+        }
+        .hot-spring-content {
+            display: none;
+        }
+        .hot-spring-content.active {
+            display: block;
+        }
+        .modal {
+            display: none;
+        }
+        .modal.show {
+            display: flex;
+        }
+        .building-3d {
+            width: 100%;
+            height: 400px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .image-gallery {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+        .image-gallery img {
+            transition: transform 0.5s ease;
+        }
+        .image-gallery:hover img {
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body class="font-chinese bg-gray-50">
@@ -69,6 +150,7 @@
                     <a href="#overview" class="text-gray-600 hover:text-hot-spring-600 transition">资产概览</a>
                     <a href="#hot-spring" class="text-gray-600 hover:text-hot-spring-600 transition">温泉体验</a>
                     <a href="#details" class="text-gray-600 hover:text-hot-spring-600 transition">资产详情</a>
+                    <a href="#building-3d" class="text-gray-600 hover:text-hot-spring-600 transition">3D建模</a>
                     <a href="#auction" class="text-gray-600 hover:text-hot-spring-600 transition">拍卖信息</a>
                 </div>
                 <button class="md:hidden">
@@ -259,138 +341,197 @@
     </section>
 
     <!-- 温泉体验 -->
-    <section id="hot-spring" class="py-16 bg-gradient-to-br from-orange-50 to-red-50">
+    <section id="hot-spring" class="py-12 bg-gradient-to-br from-orange-50 to-red-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
+            <div class="text-center mb-12">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">温泉体验设施</h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">
                     集温泉酒店、温泉世界、餐饮娱乐于一体的综合温泉度假综合体
                 </p>
             </div>
 
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- 温泉酒店 -->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
-                    <div class="h-48 bg-gradient-to-br from-hot-spring-500 to-hot-spring-700 flex items-center justify-center">
-                        <i class="fas fa-hotel text-white text-4xl"></i>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-900 mb-3">温泉酒店</h3>
-                        <p class="text-gray-600 mb-4">104间客房的高端温泉酒店，为宾客提供舒适的住宿体验</p>
-                        <div class="space-y-2">
-                            <div class="flex justify-between">
-                                <span class="text-sm text-gray-500">客房数量</span>
-                                <span class="text-sm font-semibold">104间</span>
+            <!-- 温泉设施轮播 -->
+            <div class="bg-white rounded-2xl shadow-lg p-8">
+                <!-- 轮播控制按钮 -->
+                <div class="flex justify-center items-center space-x-4 mb-6">
+                    <button onclick="previousHotSpringTab()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 p-2 rounded-full transition">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button onclick="toggleHotSpringAutoPlay()" id="hotSpringAutoPlayBtn" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-full transition flex items-center">
+                        <i class="fas fa-play mr-2" id="hotSpringPlayIcon"></i>
+                        <span id="hotSpringPlayText">自动播放</span>
+                    </button>
+                    <button onclick="nextHotSpringTab()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 p-2 rounded-full transition">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                
+                <!-- 轮播指示器 -->
+                <div class="flex justify-center mb-6 space-x-2">
+                    <div class="hot-spring-indicator active" data-tab="hotel-content"></div>
+                    <div class="hot-spring-indicator" data-tab="world-content"></div>
+                    <div class="hot-spring-indicator" data-tab="spa-content"></div>
+                    <div class="hot-spring-indicator" data-tab="dining-content"></div>
+                    <div class="hot-spring-indicator" data-tab="complex-content"></div>
+                    <div class="hot-spring-indicator" data-tab="parking-content"></div>
+                </div>
+                
+                <!-- 温泉设施标签页 -->
+                <div class="flex flex-wrap justify-center mb-6">
+                    <button onclick="switchHotSpringTab('hotel')" id="hotelBtn" class="hot-spring-tab active mx-2 mb-2 px-4 py-2 rounded-lg font-semibold bg-orange-100 text-orange-700">
+                        <i class="fas fa-hotel mr-2"></i>温泉酒店
+                    </button>
+                    <button onclick="switchHotSpringTab('world')" id="worldBtn" class="hot-spring-tab mx-2 mb-2 px-4 py-2 rounded-lg font-semibold bg-blue-100 text-blue-700">
+                        <i class="fas fa-swimming-pool mr-2"></i>地下水世界
+                    </button>
+                    <button onclick="switchHotSpringTab('spa')" id="spaBtn" class="hot-spring-tab mx-2 mb-2 px-4 py-2 rounded-lg font-semibold bg-green-100 text-green-700">
+                        <i class="fas fa-spa mr-2"></i>温泉区域
+                    </button>
+                    <button onclick="switchHotSpringTab('dining')" id="diningBtn" class="hot-spring-tab mx-2 mb-2 px-4 py-2 rounded-lg font-semibold bg-purple-100 text-purple-700">
+                        <i class="fas fa-utensils mr-2"></i>顺峰餐饮
+                    </button>
+                    <button onclick="switchHotSpringTab('complex')" id="complexBtn" class="hot-spring-tab mx-2 mb-2 px-4 py-2 rounded-lg font-semibold bg-indigo-100 text-indigo-700">
+                        <i class="fas fa-building mr-2"></i>地下综合
+                    </button>
+                    <button onclick="switchHotSpringTab('parking')" id="parkingBtn" class="hot-spring-tab mx-2 mb-2 px-4 py-2 rounded-lg font-semibold bg-gray-100 text-gray-700">
+                        <i class="fas fa-parking mr-2"></i>停车设施
+                    </button>
+                </div>
+
+                <!-- 温泉酒店内容 -->
+                <div id="hotel-content" class="hot-spring-content active">
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">温泉酒店</h3>
+                            <p class="text-gray-600 mb-6">104间客房的高端温泉酒店，为宾客提供舒适的住宿体验</p>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="text-center p-4 bg-orange-50 rounded-lg">
+                                    <div class="text-2xl font-bold text-orange-600">104间</div>
+                                    <div class="text-sm text-gray-600">客房数量</div>
+                                </div>
+                                <div class="text-center p-4 bg-orange-50 rounded-lg">
+                                    <div class="text-2xl font-bold text-orange-600">18,000㎡</div>
+                                    <div class="text-sm text-gray-600">建筑面积</div>
+                                </div>
                             </div>
-                            <div class="flex justify-between">
-                                <span class="text-sm text-gray-500">建筑面积</span>
-                                <span class="text-sm font-semibold">18,000㎡</span>
-                            </div>
+                        </div>
+                        <div class="bg-gradient-to-br from-orange-400 to-orange-600 rounded-xl h-64 flex items-center justify-center">
+                            <i class="fas fa-hotel text-white text-6xl"></i>
                         </div>
                     </div>
                 </div>
 
-                <!-- 温泉世界 -->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
-                    <div class="h-48 bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
-                        <i class="fas fa-swimming-pool text-white text-4xl"></i>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-900 mb-3">地下水世界</h3>
-                        <p class="text-gray-600 mb-4">大型地下温泉世界，52,532㎡的超大空间，多样化温泉体验</p>
-                        <div class="space-y-2">
-                            <div class="flex justify-between">
-                                <span class="text-sm text-gray-500">总面积</span>
-                                <span class="text-sm font-semibold">52,532㎡</span>
+                <!-- 地下水世界内容 -->
+                <div id="world-content" class="hot-spring-content">
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">地下水世界</h3>
+                            <p class="text-gray-600 mb-6">大型地下温泉世界，52,532㎡的超大空间，多样化温泉体验</p>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="text-center p-4 bg-blue-50 rounded-lg">
+                                    <div class="text-2xl font-bold text-blue-600">52,532㎡</div>
+                                    <div class="text-sm text-gray-600">总面积</div>
+                                </div>
+                                <div class="text-center p-4 bg-blue-50 rounded-lg">
+                                    <div class="text-2xl font-bold text-blue-600">世界级</div>
+                                    <div class="text-sm text-gray-600">设施水平</div>
+                                </div>
                             </div>
-                            <div class="flex justify-between">
-                                <span class="text-sm text-gray-500">设施类型</span>
-                                <span class="text-sm font-semibold">温泉世界</span>
-                            </div>
+                        </div>
+                        <div class="bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl h-64 flex items-center justify-center">
+                            <i class="fas fa-swimming-pool text-white text-6xl"></i>
                         </div>
                     </div>
                 </div>
 
-                <!-- 温泉区域 -->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
-                    <div class="h-48 bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center">
-                        <i class="fas fa-spa text-white text-4xl"></i>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-900 mb-3">温泉区域</h3>
-                        <p class="text-gray-600 mb-4">VIP与普通温泉区域，6,000㎡的精致温泉空间</p>
-                        <div class="space-y-2">
-                            <div class="flex justify-between">
-                                <span class="text-sm text-gray-500">温泉面积</span>
-                                <span class="text-sm font-semibold">6,000㎡</span>
+                <!-- 温泉区域内容 -->
+                <div id="spa-content" class="hot-spring-content">
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">温泉区域</h3>
+                            <p class="text-gray-600 mb-6">VIP与普通温泉区域，6,000㎡的精致温泉空间</p>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="text-center p-4 bg-green-50 rounded-lg">
+                                    <div class="text-2xl font-bold text-green-600">6,000㎡</div>
+                                    <div class="text-sm text-gray-600">温泉面积</div>
+                                </div>
+                                <div class="text-center p-4 bg-green-50 rounded-lg">
+                                    <div class="text-2xl font-bold text-green-600">VIP+普通</div>
+                                    <div class="text-sm text-gray-600">区域类型</div>
+                                </div>
                             </div>
-                            <div class="flex justify-between">
-                                <span class="text-sm text-gray-500">区域类型</span>
-                                <span class="text-sm font-semibold">VIP+普通</span>
-                            </div>
+                        </div>
+                        <div class="bg-gradient-to-br from-green-400 to-green-600 rounded-xl h-64 flex items-center justify-center">
+                            <i class="fas fa-spa text-white text-6xl"></i>
                         </div>
                     </div>
                 </div>
 
-                <!-- 餐饮配套 -->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
-                    <div class="h-48 bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
-                        <i class="fas fa-utensils text-white text-4xl"></i>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-900 mb-3">顺峰餐饮</h3>
-                        <p class="text-gray-600 mb-4">高端餐饮配套，8,400㎡的餐饮空间，提供精致的美食体验</p>
-                        <div class="space-y-2">
-                            <div class="flex justify-between">
-                                <span class="text-sm text-gray-500">餐饮面积</span>
-                                <span class="text-sm font-semibold">8,400㎡</span>
+                <!-- 顺峰餐饮内容 -->
+                <div id="dining-content" class="hot-spring-content">
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">顺峰餐饮</h3>
+                            <p class="text-gray-600 mb-6">高端餐饮配套，8,400㎡的餐饮空间，提供精致的美食体验</p>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="text-center p-4 bg-purple-50 rounded-lg">
+                                    <div class="text-2xl font-bold text-purple-600">8,400㎡</div>
+                                    <div class="text-sm text-gray-600">餐饮面积</div>
+                                </div>
+                                <div class="text-center p-4 bg-purple-50 rounded-lg">
+                                    <div class="text-2xl font-bold text-purple-600">高端</div>
+                                    <div class="text-sm text-gray-600">餐饮定位</div>
+                                </div>
                             </div>
-                            <div class="flex justify-between">
-                                <span class="text-sm text-gray-500">定位</span>
-                                <span class="text-sm font-semibold">高端餐饮</span>
-                            </div>
+                        </div>
+                        <div class="bg-gradient-to-br from-purple-400 to-purple-600 rounded-xl h-64 flex items-center justify-center">
+                            <i class="fas fa-utensils text-white text-6xl"></i>
                         </div>
                     </div>
                 </div>
 
-                <!-- 地下综合 -->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
-                    <div class="h-48 bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center">
-                        <i class="fas fa-building text-white text-4xl"></i>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-900 mb-3">地下综合</h3>
-                        <p class="text-gray-600 mb-4">32,093㎡的地下综合区域，整合温泉、餐饮、酒店等功能</p>
-                        <div class="space-y-2">
-                            <div class="flex justify-between">
-                                <span class="text-sm text-gray-500">综合面积</span>
-                                <span class="text-sm font-semibold">32,093㎡</span>
+                <!-- 地下综合内容 -->
+                <div id="complex-content" class="hot-spring-content">
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">地下综合</h3>
+                            <p class="text-gray-600 mb-6">32,093㎡的地下综合区域，整合温泉、餐饮、酒店等功能</p>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="text-center p-4 bg-indigo-50 rounded-lg">
+                                    <div class="text-2xl font-bold text-indigo-600">32,093㎡</div>
+                                    <div class="text-sm text-gray-600">综合面积</div>
+                                </div>
+                                <div class="text-center p-4 bg-indigo-50 rounded-lg">
+                                    <div class="text-2xl font-bold text-indigo-600">综合</div>
+                                    <div class="text-sm text-gray-600">功能定位</div>
+                                </div>
                             </div>
-                            <div class="flex justify-between">
-                                <span class="text-sm text-gray-500">功能</span>
-                                <span class="text-sm font-semibold">综合配套</span>
-                            </div>
+                        </div>
+                        <div class="bg-gradient-to-br from-indigo-400 to-indigo-600 rounded-xl h-64 flex items-center justify-center">
+                            <i class="fas fa-building text-white text-6xl"></i>
                         </div>
                     </div>
                 </div>
 
-                <!-- 停车配套 -->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
-                    <div class="h-48 bg-gradient-to-br from-gray-500 to-gray-700 flex items-center justify-center">
-                        <i class="fas fa-parking text-white text-4xl"></i>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-900 mb-3">停车设施</h3>
-                        <p class="text-gray-600 mb-4">2.72万平米的地下车库，533个车位，满足停车需求</p>
-                        <div class="space-y-2">
-                            <div class="flex justify-between">
-                                <span class="text-sm text-gray-500">车库面积</span>
-                                <span class="text-sm font-semibold">2.72万㎡</span>
+                <!-- 停车设施内容 -->
+                <div id="parking-content" class="hot-spring-content">
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">停车设施</h3>
+                            <p class="text-gray-600 mb-6">2.72万平米的地下车库，533个车位，满足停车需求</p>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                    <div class="text-2xl font-bold text-gray-600">2.72万㎡</div>
+                                    <div class="text-sm text-gray-600">车库面积</div>
+                                </div>
+                                <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                    <div class="text-2xl font-bold text-gray-600">533个</div>
+                                    <div class="text-sm text-gray-600">车位数量</div>
+                                </div>
                             </div>
-                            <div class="flex justify-between">
-                                <span class="text-sm text-gray-500">车位数量</span>
-                                <span class="text-sm font-semibold">533个</span>
-                            </div>
+                        </div>
+                        <div class="bg-gradient-to-br from-gray-400 to-gray-600 rounded-xl h-64 flex items-center justify-center">
+                            <i class="fas fa-parking text-white text-6xl"></i>
                         </div>
                     </div>
                 </div>
@@ -408,110 +549,532 @@
                 </p>
             </div>
 
-            <div class="grid lg:grid-cols-2 gap-12">
-                <!-- 住宅产品分析 -->
-                <div class="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl p-8">
-                    <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                        <i class="fas fa-home text-blue-500 mr-3"></i>
-                        住宅产品分析
-                    </h3>
-                    
-                    <div class="space-y-6">
-                        <div class="bg-white rounded-xl p-4">
-                            <h4 class="font-semibold text-gray-900 mb-3">产品类型分布</h4>
-                            <div class="space-y-3">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-gray-600">改善型住宅 (300㎡以下)</span>
-                                    <div class="flex items-center">
-                                        <div class="w-24 bg-gray-200 rounded-full h-2 mr-3">
-                                            <div class="bg-blue-500 h-2 rounded-full" style="width: 22%"></div>
+            <!-- 标签页导航 -->
+            <div class="mb-8">
+                <div class="flex flex-wrap justify-center mb-6">
+                    <button onclick="switchTab('product-analysis')" class="tab-button active mx-2 mb-2 px-6 py-3 rounded-lg font-semibold bg-gray-100 text-gray-700">
+                        产品分析
+                    </button>
+                    <button onclick="switchTab('building-details')" class="tab-button mx-2 mb-2 px-6 py-3 rounded-lg font-semibold bg-gray-100 text-gray-700">
+                        楼栋详情
+                    </button>
+                    <button onclick="switchTab('facility-layout')" class="tab-button mx-2 mb-2 px-6 py-3 rounded-lg font-semibold bg-gray-100 text-gray-700">
+                        设施布局
+                    </button>
+                    <button onclick="switchTab('investment-analysis')" class="tab-button mx-2 mb-2 px-6 py-3 rounded-lg font-semibold bg-gray-100 text-gray-700">
+                        投资分析
+                    </button>
+                </div>
+                
+                <!-- 轮播控制按钮 -->
+                <div class="flex justify-center items-center space-x-4">
+                    <button onclick="previousTab()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 p-2 rounded-full transition">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button onclick="toggleAutoPlay()" id="autoPlayBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full transition flex items-center">
+                        <i class="fas fa-play mr-2" id="playIcon"></i>
+                        <span id="playText">自动播放</span>
+                    </button>
+                    <button onclick="nextTab()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 p-2 rounded-full transition">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                
+                <!-- 轮播指示器 -->
+                <div class="flex justify-center mt-4 space-x-2">
+                    <div class="tab-indicator active" data-tab="product-analysis"></div>
+                    <div class="tab-indicator" data-tab="building-details"></div>
+                    <div class="tab-indicator" data-tab="facility-layout"></div>
+                    <div class="tab-indicator" data-tab="investment-analysis"></div>
+                </div>
+            </div>
+
+            <!-- 产品分析标签页 -->
+            <div id="product-analysis" class="tab-content active">
+                <div class="grid lg:grid-cols-2 gap-12">
+                    <!-- 住宅产品分析 -->
+                    <div class="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl p-8">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                            <i class="fas fa-home text-blue-500 mr-3"></i>
+                            住宅产品分析
+                        </h3>
+                        
+                        <div class="space-y-6">
+                            <div class="bg-white rounded-xl p-4">
+                                <h4 class="font-semibold text-gray-900 mb-3">产品类型分布</h4>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-600">改善型住宅 (300㎡以下)</span>
+                                        <div class="flex items-center">
+                                            <div class="w-24 bg-gray-200 rounded-full h-2 mr-3">
+                                                <div class="bg-blue-500 h-2 rounded-full" style="width: 22%"></div>
+                                            </div>
+                                            <span class="text-sm font-semibold">22%</span>
                                         </div>
-                                        <span class="text-sm font-semibold">22%</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-600">顶级豪宅 (500-900㎡)</span>
+                                        <div class="flex items-center">
+                                            <div class="w-24 bg-gray-200 rounded-full h-2 mr-3">
+                                                <div class="bg-hot-spring-500 h-2 rounded-full" style="width: 50%"></div>
+                                            </div>
+                                            <span class="text-sm font-semibold">50.4%</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-600">超级豪宅 (900㎡以上)</span>
+                                        <div class="flex items-center">
+                                            <div class="w-24 bg-gray-200 rounded-full h-2 mr-3">
+                                                <div class="bg-luxury-gold-500 h-2 rounded-full" style="width: 28%"></div>
+                                            </div>
+                                            <span class="text-sm font-semibold">27.6%</span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-gray-600">顶级豪宅 (500-900㎡)</span>
-                                    <div class="flex items-center">
-                                        <div class="w-24 bg-gray-200 rounded-full h-2 mr-3">
-                                            <div class="bg-hot-spring-500 h-2 rounded-full" style="width: 50%"></div>
-                                        </div>
-                                        <span class="text-sm font-semibold">50.4%</span>
+                            </div>
+
+                            <div class="bg-white rounded-xl p-4">
+                                <h4 class="font-semibold text-gray-900 mb-3">关键指标</h4>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="text-center">
+                                        <div class="text-2xl font-bold text-blue-600">96</div>
+                                        <div class="text-sm text-gray-600">剩余套数</div>
                                     </div>
-                                </div>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-gray-600">超级豪宅 (900㎡以上)</span>
-                                    <div class="flex items-center">
-                                        <div class="w-24 bg-gray-200 rounded-full h-2 mr-3">
-                                            <div class="bg-luxury-gold-500 h-2 rounded-full" style="width: 28%"></div>
-                                        </div>
-                                        <span class="text-sm font-semibold">27.6%</span>
+                                    <div class="text-center">
+                                        <div class="text-2xl font-bold text-blue-600">5.13万</div>
+                                        <div class="text-sm text-gray-600">总面积(㎡)</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="bg-white rounded-xl p-4">
-                            <h4 class="font-semibold text-gray-900 mb-3">关键指标</h4>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div class="text-center">
-                                    <div class="text-2xl font-bold text-blue-600">96</div>
-                                    <div class="text-sm text-gray-600">剩余套数</div>
+                    <!-- 商业配套分析 -->
+                    <div class="bg-gradient-to-br from-orange-50 to-red-100 rounded-2xl p-8">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                            <i class="fas fa-building text-orange-500 mr-3"></i>
+                            商业配套分析
+                        </h3>
+                        
+                        <div class="space-y-6">
+                            <div class="bg-white rounded-xl p-4">
+                                <h4 class="font-semibold text-gray-900 mb-3">商业面积构成</h4>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-600">地下综合区域</span>
+                                        <div class="flex items-center">
+                                            <div class="w-24 bg-gray-200 rounded-full h-2 mr-3">
+                                                <div class="bg-orange-500 h-2 rounded-full" style="width: 38%"></div>
+                                            </div>
+                                            <span class="text-sm font-semibold">38%</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-600">地下水世界</span>
+                                        <div class="flex items-center">
+                                            <div class="w-24 bg-gray-200 rounded-full h-2 mr-3">
+                                                <div class="bg-blue-500 h-2 rounded-full" style="width: 62%"></div>
+                                            </div>
+                                            <span class="text-sm font-semibold">62%</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="text-center">
-                                    <div class="text-2xl font-bold text-blue-600">5.13万</div>
-                                    <div class="text-sm text-gray-600">总面积(㎡)</div>
+                            </div>
+
+                            <div class="bg-white rounded-xl p-4">
+                                <h4 class="font-semibold text-gray-900 mb-3">温泉配套</h4>
+                                <div class="space-y-2">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">温泉酒店</span>
+                                        <span class="font-semibold">18,000㎡</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">温泉区域</span>
+                                        <span class="font-semibold">6,000㎡</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">餐饮配套</span>
+                                        <span class="font-semibold">8,400㎡</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 商业配套分析 -->
-                <div class="bg-gradient-to-br from-orange-50 to-red-100 rounded-2xl p-8">
-                    <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                        <i class="fas fa-building text-orange-500 mr-3"></i>
-                        商业配套分析
-                    </h3>
-                    
-                    <div class="space-y-6">
-                        <div class="bg-white rounded-xl p-4">
-                            <h4 class="font-semibold text-gray-900 mb-3">商业面积构成</h4>
-                            <div class="space-y-3">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-gray-600">地下综合区域</span>
-                                    <div class="flex items-center">
-                                        <div class="w-24 bg-gray-200 rounded-full h-2 mr-3">
-                                            <div class="bg-orange-500 h-2 rounded-full" style="width: 38%"></div>
-                                        </div>
-                                        <span class="text-sm font-semibold">38%</span>
-                                    </div>
+                <!-- 详细产品表格 -->
+                <div class="mt-12 bg-white rounded-2xl shadow-lg p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">详细产品配置表</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full table-auto">
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900">产品类型</th>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900">面积区间</th>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900">套数</th>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900">总面积</th>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900">占比</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-4 py-3 text-sm text-gray-600">改善型住宅</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">300以下</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">32套</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">8,758.16㎡</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">22%</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 text-sm text-gray-600">改善型住宅</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">300-400</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">5套</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">1,575.50㎡</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">22%</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 text-sm text-gray-600">改善型住宅</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">400-500</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">2套</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">989.10㎡</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">22%</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 text-sm text-gray-600">顶级豪宅</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">500-600</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">41套</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">22,319.34㎡</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">50.4%</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 text-sm text-gray-600">顶级豪宅</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">800-900</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">4套</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">3,543.33㎡</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">50.4%</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 text-sm text-gray-600">超级豪宅</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">900-1000</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">7套</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">6,761.43㎡</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">27.6%</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 text-sm text-gray-600">超级豪宅</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">1000以上</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">5套</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">7,365.43㎡</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">27.6%</td>
+                                </tr>
+                                <tr class="bg-hot-spring-50">
+                                    <td class="px-4 py-3 text-sm font-semibold text-gray-900">总计</td>
+                                    <td class="px-4 py-3 text-sm font-semibold text-gray-900">300-2000</td>
+                                    <td class="px-4 py-3 text-sm font-semibold text-gray-900">96套</td>
+                                    <td class="px-4 py-3 text-sm font-semibold text-gray-900">51,312.29㎡</td>
+                                    <td class="px-4 py-3 text-sm font-semibold text-gray-900">100%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 楼栋详情标签页 -->
+            <div id="building-details" class="tab-content">
+                <div class="bg-white rounded-2xl shadow-lg p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">楼栋分布详情</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full table-auto">
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900">楼号</th>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900">套数</th>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900">业态</th>
+                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900">面积</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-4 py-3 text-sm font-semibold text-gray-900">2号楼</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">1套</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">独栋</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">2172㎡</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 text-sm font-semibold text-gray-900">3号楼</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">1套</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">独栋</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">2182㎡</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 text-sm font-semibold text-gray-900">4号楼</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">4套平层+1套跃层</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">一梯一户</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">532-552㎡ / 945㎡</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 text-sm font-semibold text-gray-900">5号楼</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">3套平层+1套跃层</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">一梯一户</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">521-552㎡ / 929㎡</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 text-sm font-semibold text-gray-900">9号楼</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">10套平层+2套跃层</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">三梯两户</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">511-533㎡ / 888㎡</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 text-sm font-semibold text-gray-900">10号楼</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">8套平层+2套跃层</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">两梯两户</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">557㎡ / 969㎡</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 text-sm font-semibold text-gray-900">11号楼</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">10套平层+2套跃层</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">两梯两户</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">559-581㎡ / 974㎡</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 text-sm font-semibold text-gray-900">12号楼</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">8套平层+2套跃层</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">两梯两户</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">494-537㎡ / 870-895㎡</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 text-sm font-semibold text-gray-900">13号楼</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">20套平层+2套跃层</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">三梯四户</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">262-308㎡ / 998-1000㎡</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 text-sm font-semibold text-gray-900">14号楼</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">17套平层+2套跃层</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">两梯四户</td>
+                                    <td class="px-4 py-3 text-sm text-gray-600">232-323㎡ / 1004㎡</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 设施布局标签页 -->
+            <div id="facility-layout" class="tab-content">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-white rounded-2xl shadow-lg p-8">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6">地下设施布局</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center p-4 bg-blue-50 rounded-lg">
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">地下综合区域</h4>
+                                    <p class="text-sm text-gray-600">-201、-202楼层</p>
                                 </div>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-gray-600">地下水世界</span>
-                                    <div class="flex items-center">
-                                        <div class="w-24 bg-gray-200 rounded-full h-2 mr-3">
-                                            <div class="bg-blue-500 h-2 rounded-full" style="width: 62%"></div>
-                                        </div>
-                                        <span class="text-sm font-semibold">62%</span>
-                                    </div>
+                                <span class="text-xl font-bold text-blue-600">32,093㎡</span>
+                            </div>
+                            <div class="flex justify-between items-center p-4 bg-green-50 rounded-lg">
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">地下水世界</h4>
+                                    <p class="text-sm text-gray-600">-301、-302楼层</p>
+                                </div>
+                                <span class="text-xl font-bold text-green-600">52,532㎡</span>
+                            </div>
+                            <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">地下车库</h4>
+                                    <p class="text-sm text-gray-600">负一层（实际二层）</p>
+                                </div>
+                                <span class="text-xl font-bold text-gray-600">27,200㎡</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow-lg p-8">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6">功能分区详解</h3>
+                        <div class="space-y-4">
+                            <div class="p-4 bg-orange-50 rounded-lg">
+                                <h4 class="font-semibold text-gray-900 mb-2">温泉酒店区域</h4>
+                                <p class="text-sm text-gray-600 mb-1">大厅区域及104间客房</p>
+                                <p class="text-sm text-gray-600">约18,000㎡</p>
+                            </div>
+                            <div class="p-4 bg-purple-50 rounded-lg">
+                                <h4 class="font-semibold text-gray-900 mb-2">温泉区域</h4>
+                                <p class="text-sm text-gray-600 mb-1">VIP+普通温泉</p>
+                                <p class="text-sm text-gray-600">约6,000㎡</p>
+                            </div>
+                            <div class="p-4 bg-yellow-50 rounded-lg">
+                                <h4 class="font-semibold text-gray-900 mb-2">餐饮区域</h4>
+                                <p class="text-sm text-gray-600 mb-1">顺峰餐饮配套</p>
+                                <p class="text-sm text-gray-600">约8,400㎡</p>
+                            </div>
+                            <div class="p-4 bg-indigo-50 rounded-lg">
+                                <h4 class="font-semibold text-gray-900 mb-2">停车区域</h4>
+                                <p class="text-sm text-gray-600 mb-1">533个车位</p>
+                                <p class="text-sm text-gray-600">27,200㎡</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 投资分析标签页 -->
+            <div id="investment-analysis" class="tab-content">
+                <div class="bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6 text-center">投资价值分析</h3>
+                    <div class="grid md:grid-cols-3 gap-6 mb-8">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-red-600 mb-2">27.37亿</div>
+                            <div class="text-gray-600 mb-2">当前变卖价格</div>
+                            <div class="text-sm text-gray-500">折合单价约5.3万/㎡</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-orange-600 mb-2">13-14万/㎡</div>
+                            <div class="text-gray-600 mb-2">潜在市场价格</div>
+                            <div class="text-sm text-gray-500">重新设计装修后预期</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-green-600 mb-2">20亿+</div>
+                            <div class="text-gray-600 mb-2">投资价值空间</div>
+                            <div class="text-sm text-gray-500">保守估算增值潜力</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl p-6">
+                        <h4 class="text-lg font-semibold text-gray-900 mb-4">投资回报分析</h4>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h5 class="font-semibold text-gray-700 mb-2">当前状况</h5>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>• 变卖价格：27.37亿元</li>
+                                    <li>• 周边豪宅价格：17万+/㎡</li>
+                                    <li>• 项目现状：需要重新设计装修</li>
+                                    <li>• 市场接受度：存在品质提升需求</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h5 class="font-semibold text-gray-700 mb-2">投资潜力</h5>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>• 重新装修后可达13-14万/㎡</li>
+                                    <li>• 投资空间约20亿元</li>
+                                    <li>• 温泉资源具有独特性</li>
+                                    <li>• 四环内位置稀缺性高</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3D建模展示 -->
+    <section id="building-3d" class="py-16 bg-gradient-to-br from-gray-100 to-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">3D建筑建模展示</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    通过3D建模技术，全面展示项目的空间布局和建筑设计
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12">
+                <!-- 3D建筑模型 -->
+                <div class="bg-white rounded-2xl shadow-lg p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">建筑外观3D模型</h3>
+                    
+                    <!-- 3D控制面板 -->
+                    <div class="mb-4 flex flex-wrap gap-2">
+                        <button onclick="resetCamera()" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">
+                            <i class="fas fa-home mr-1"></i>重置视角
+                        </button>
+                        <button onclick="toggleWireframe()" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm" id="wireframeBtn">
+                            <i class="fas fa-border-all mr-1"></i>线框模式
+                        </button>
+                        <button onclick="toggleAnimation()" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm" id="animBtn">
+                            <i class="fas fa-play mr-1"></i>旋转动画
+                        </button>
+                        <button onclick="toggleBuildings()" class="bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 rounded text-sm" id="buildingsBtn">
+                            <i class="fas fa-building mr-1"></i>显示建筑
+                        </button>
+                    </div>
+                    
+                    <div class="building-3d bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg overflow-hidden relative">
+                        <canvas id="building3DCanvas" class="w-full h-full"></canvas>
+                        <div class="absolute top-4 left-4 bg-black/70 text-white px-3 py-1 rounded text-sm">
+                            <i class="fas fa-mouse mr-1"></i>拖拽旋转 | 滚轮缩放
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 grid grid-cols-2 gap-4">
+                        <div class="text-center p-4 bg-blue-50 rounded-lg">
+                            <div class="text-2xl font-bold text-blue-600">14栋</div>
+                            <div class="text-sm text-gray-600">建筑单体</div>
+                        </div>
+                        <div class="text-center p-4 bg-green-50 rounded-lg">
+                            <div class="text-2xl font-bold text-green-600">18.24万㎡</div>
+                            <div class="text-sm text-gray-600">总建筑面积</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 户型3D展示 -->
+                <div class="bg-white rounded-2xl shadow-lg p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">典型户型说明</h3>
+                    <div class="space-y-6">
+                        <!-- 超级豪宅户型 -->
+                        <div class="p-6 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-3">超级豪宅户型 (2172㎡)</h4>
+                            <div class="grid grid-cols-3 gap-4 text-center">
+                                <div>
+                                    <div class="text-xl font-bold text-orange-600">4室</div>
+                                    <div class="text-xs text-gray-600">主卧套房</div>
+                                </div>
+                                <div>
+                                    <div class="text-xl font-bold text-orange-600">3厅</div>
+                                    <div class="text-xs text-gray-600">客厅+餐厅</div>
+                                </div>
+                                <div>
+                                    <div class="text-xl font-bold text-orange-600">3卫</div>
+                                    <div class="text-xs text-gray-600">主卫+客卫</div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="bg-white rounded-xl p-4">
-                            <h4 class="font-semibold text-gray-900 mb-3">温泉配套</h4>
-                            <div class="space-y-2">
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">温泉酒店</span>
-                                    <span class="font-semibold">18,000㎡</span>
+                        <!-- 顶级豪宅户型 -->
+                        <div class="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-3">顶级豪宅户型 (532-581㎡)</h4>
+                            <div class="grid grid-cols-3 gap-4 text-center">
+                                <div>
+                                    <div class="text-xl font-bold text-indigo-600">3室</div>
+                                    <div class="text-xs text-gray-600">主卧+次卧</div>
                                 </div>
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">温泉区域</span>
-                                    <span class="font-semibold">6,000㎡</span>
+                                <div>
+                                    <div class="text-xl font-bold text-indigo-600">2厅</div>
+                                    <div class="text-xs text-gray-600">客厅+餐厅</div>
                                 </div>
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">餐饮配套</span>
-                                    <span class="font-semibold">8,400㎡</span>
+                                <div>
+                                    <div class="text-xl font-bold text-indigo-600">2卫</div>
+                                    <div class="text-xs text-gray-600">主卫+客卫</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 改善型住宅户型 -->
+                        <div class="p-6 bg-gradient-to-r from-green-50 to-teal-50 rounded-xl">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-3">改善型住宅 (232-323㎡)</h4>
+                            <div class="grid grid-cols-3 gap-4 text-center">
+                                <div>
+                                    <div class="text-xl font-bold text-teal-600">2-3室</div>
+                                    <div class="text-xs text-gray-600">主卧+次卧</div>
+                                </div>
+                                <div>
+                                    <div class="text-xl font-bold text-teal-600">1-2厅</div>
+                                    <div class="text-xs text-gray-600">客厅+餐厅</div>
+                                </div>
+                                <div>
+                                    <div class="text-xl font-bold text-teal-600">1-2卫</div>
+                                    <div class="text-xs text-gray-600">主卫+客卫</div>
                                 </div>
                             </div>
                         </div>
@@ -519,24 +1082,54 @@
                 </div>
             </div>
 
-            <!-- 价格对比分析 -->
-            <div class="mt-12 bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-8">
-                <h3 class="text-2xl font-bold text-gray-900 mb-6 text-center">投资价值分析</h3>
-                <div class="grid md:grid-cols-3 gap-6">
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-red-600 mb-2">27.37亿</div>
-                        <div class="text-gray-600 mb-2">当前变卖价格</div>
-                        <div class="text-sm text-gray-500">折合单价约5.3万/㎡</div>
+            <!-- 室内装修效果展示 -->
+            <div class="mt-12 bg-white rounded-2xl shadow-lg p-8">
+                <h3 class="text-2xl font-bold text-gray-900 mb-8 text-center">室内装修效果展示</h3>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="image-gallery rounded-xl overflow-hidden shadow-lg">
+                        <img src="imgs/luxury-beijing-apartment-interior-living-room-design.jpg" alt="豪华客厅设计" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h4 class="font-semibold text-gray-900 mb-2">豪华客厅设计</h4>
+                            <p class="text-sm text-gray-600">现代化低矮模块化座椅，定制储物展示墙</p>
+                        </div>
                     </div>
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-orange-600 mb-2">13-14万/㎡</div>
-                        <div class="text-gray-600 mb-2">潜在市场价格</div>
-                        <div class="text-sm text-gray-500">重新设计装修后预期</div>
+
+                    <div class="image-gallery rounded-xl overflow-hidden shadow-lg">
+                        <img src="imgs/beijing-luxury-apartment-sculptural-staircase-interior.jpg" alt="雕塑楼梯设计" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h4 class="font-semibold text-gray-900 mb-2">艺术楼梯设计</h4>
+                            <p class="text-sm text-gray-600">白色螺旋楼梯，大理石地板，现代落地窗</p>
+                        </div>
                     </div>
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-green-600 mb-2">20亿+</div>
-                        <div class="text-gray-600 mb-2">投资价值空间</div>
-                        <div class="text-sm text-gray-500">保守估算增值潜力</div>
+
+                    <div class="image-gallery rounded-xl overflow-hidden shadow-lg">
+                        <img src="imgs/luxury-penthouse-interior-beijing-marble-floor-city-view.jpg" alt="顶层公寓" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h4 class="font-semibold text-gray-900 mb-2">顶层豪华公寓</h4>
+                            <p class="text-sm text-gray-600">大理石壁炉，城市天际线景观，现代用餐区</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 地下设施展示 -->
+            <div class="mt-12 bg-white rounded-2xl shadow-lg p-8">
+                <h3 class="text-2xl font-bold text-gray-900 mb-8 text-center">地下设施展示</h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="image-gallery rounded-xl overflow-hidden shadow-lg">
+                        <img src="imgs/modern-underground-parking-garage-lighting-design.jpg" alt="地下停车场" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h4 class="font-semibold text-gray-900 mb-2">现代化地下停车场</h4>
+                            <p class="text-sm text-gray-600">LED几何天花板设计，反光地板，豪华车辆展示</p>
+                        </div>
+                    </div>
+
+                    <div class="image-gallery rounded-xl overflow-hidden shadow-lg">
+                        <img src="imgs/indoor-spa-wellness-center-hydrotherapy-pool-design.jpg" alt="温泉疗养中心" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h4 class="font-semibold text-gray-900 mb-2">地下温泉疗养中心</h4>
+                            <p class="text-sm text-gray-600">水疗池设计，天然光引入，现代几何马赛克</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -757,6 +1350,7 @@
                         <li><a href="#overview" class="hover:text-white transition">资产概览</a></li>
                         <li><a href="#hot-spring" class="hover:text-white transition">温泉体验</a></li>
                         <li><a href="#details" class="hover:text-white transition">资产详情</a></li>
+                        <li><a href="#building-3d" class="hover:text-white transition">3D建模</a></li>
                         <li><a href="#auction" class="hover:text-white transition">拍卖信息</a></li>
                     </ul>
                 </div>
@@ -764,8 +1358,8 @@
                 <div>
                     <h4 class="font-semibold mb-4">联系我们</h4>
                     <ul class="space-y-2 text-gray-400">
-                        <li>咨询热线：400-888-9999</li>
-                        <li>邮箱：auction@shijing.com</li>
+                        <li>咨询热线：400-XXX-XXXX</li>
+                        <li>邮箱：info@xxxx.com</li>
                         <li>地址：北京市朝阳区东四环与北四环交口</li>
                     </ul>
                 </div>
@@ -784,6 +1378,243 @@
             const element = document.getElementById(sectionId);
             if (element) {
                 element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // 标签页切换功能
+        function switchTab(tabName, fromAutoPlay = false) {
+            // 隐藏所有标签页内容
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+            
+            // 移除所有按钮的激活状态
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(button => button.classList.remove('active'));
+            
+            // 移除所有指示器的激活状态
+            const indicators = document.querySelectorAll('.tab-indicator');
+            indicators.forEach(indicator => indicator.classList.remove('active'));
+            
+            // 显示选中的标签页
+            const selectedContent = document.getElementById(tabName);
+            if (selectedContent) {
+                selectedContent.classList.add('active');
+            }
+            
+            // 激活对应的按钮
+            const targetButton = Array.from(buttons).find(btn => 
+                btn.onclick && btn.onclick.toString().includes(`'${tabName}'`)
+            );
+            if (targetButton) {
+                targetButton.classList.add('active');
+            }
+            
+            // 激活对应的指示器
+            const targetIndicator = Array.from(indicators).find(ind => 
+                ind.getAttribute('data-tab') === tabName
+            );
+            if (targetIndicator) {
+                targetIndicator.classList.add('active');
+            }
+            
+            // 如果不是自动播放触发的，更新当前索引
+            if (!fromAutoPlay) {
+                currentTabIndex = Array.from(indicators).findIndex(ind => 
+                    ind.getAttribute('data-tab') === tabName
+                );
+            }
+        }
+
+        // 自动轮播相关变量
+        let currentTabIndex = 0;
+        let autoPlayInterval = null;
+        const tabNames = ['product-analysis', 'building-details', 'facility-layout', 'investment-analysis'];
+
+        // 下一张标签页
+        function nextTab() {
+            currentTabIndex = (currentTabIndex + 1) % tabNames.length;
+            switchTab(tabNames[currentTabIndex], true);
+        }
+
+        // 上一张标签页
+        function previousTab() {
+            currentTabIndex = (currentTabIndex - 1 + tabNames.length) % tabNames.length;
+            switchTab(tabNames[currentTabIndex], true);
+        }
+
+        // 切换自动播放
+        function toggleAutoPlay() {
+            const playIcon = document.getElementById('playIcon');
+            const playText = document.getElementById('playText');
+            const autoPlayBtn = document.getElementById('autoPlayBtn');
+            
+            if (autoPlayInterval) {
+                // 停止自动播放
+                clearInterval(autoPlayInterval);
+                autoPlayInterval = null;
+                playIcon.className = 'fas fa-play mr-2';
+                playText.textContent = '自动播放';
+                autoPlayBtn.className = 'bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full transition flex items-center';
+            } else {
+                // 开始自动播放
+                autoPlayInterval = setInterval(nextTab, 4000); // 每4秒切换一次
+                playIcon.className = 'fas fa-pause mr-2';
+                playText.textContent = '暂停播放';
+                autoPlayBtn.className = 'bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full transition flex items-center';
+            }
+        }
+
+        // 点击指示器切换标签页
+        document.addEventListener('DOMContentLoaded', function() {
+            const indicators = document.querySelectorAll('.tab-indicator');
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', function() {
+                    currentTabIndex = index;
+                    switchTab(tabNames[index], true);
+                });
+            });
+        });
+
+        // 温泉设施标签页切换功能
+        // 温泉体验轮播相关变量
+        let hotSpringCurrentTab = 'hotel';
+        let hotSpringAutoPlayInterval = null;
+        const hotSpringTabs = ['hotel', 'world', 'spa', 'dining', 'complex', 'parking'];
+        
+        // 切换温泉设施标签页
+        function switchHotSpringTab(tabName) {
+            // 隐藏所有温泉内容
+            const contents = document.querySelectorAll('.hot-spring-content');
+            contents.forEach(content => content.classList.remove('active'));
+            
+            // 移除所有按钮和指示器的激活状态
+            const buttons = document.querySelectorAll('.hot-spring-tab');
+            const indicators = document.querySelectorAll('.hot-spring-indicator');
+            buttons.forEach(button => button.classList.remove('active'));
+            indicators.forEach(indicator => indicator.classList.remove('active'));
+            
+            // 显示选中的内容
+            const selectedContent = document.getElementById(tabName + '-content');
+            if (selectedContent) {
+                selectedContent.classList.add('active');
+            }
+            
+            // 激活对应的按钮和指示器
+            const targetButton = document.getElementById(tabName + 'Btn');
+            const targetIndicator = document.querySelector(`[data-tab="${tabName}-content"]`);
+            if (targetButton) {
+                targetButton.classList.add('active');
+            }
+            if (targetIndicator) {
+                targetIndicator.classList.add('active');
+            }
+            
+            hotSpringCurrentTab = tabName;
+        }
+        
+        // 上一项温泉设施
+        function previousHotSpringTab() {
+            const currentIndex = hotSpringTabs.indexOf(hotSpringCurrentTab);
+            const prevIndex = currentIndex === 0 ? hotSpringTabs.length - 1 : currentIndex - 1;
+            switchHotSpringTab(hotSpringTabs[prevIndex]);
+        }
+        
+        // 下一项温泉设施
+        function nextHotSpringTab() {
+            const currentIndex = hotSpringTabs.indexOf(hotSpringCurrentTab);
+            const nextIndex = (currentIndex + 1) % hotSpringTabs.length;
+            switchHotSpringTab(hotSpringTabs[nextIndex]);
+        }
+        
+        // 切换温泉自动播放
+        function toggleHotSpringAutoPlay() {
+            const btn = document.getElementById('hotSpringAutoPlayBtn');
+            const icon = document.getElementById('hotSpringPlayIcon');
+            const text = document.getElementById('hotSpringPlayText');
+            
+            if (hotSpringAutoPlayInterval) {
+                clearInterval(hotSpringAutoPlayInterval);
+                hotSpringAutoPlayInterval = null;
+                icon.className = 'fas fa-play mr-2';
+                text.textContent = '自动播放';
+                btn.className = 'bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-full transition flex items-center';
+            } else {
+                hotSpringAutoPlayInterval = setInterval(nextHotSpringTab, 4000);
+                icon.className = 'fas fa-pause mr-2';
+                text.textContent = '停止播放';
+                btn.className = 'bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-full transition flex items-center';
+            }
+        }
+        
+        // 初始化温泉轮播
+        function initHotSpringCarousel() {
+            // 为指示器添加点击事件
+            const indicators = document.querySelectorAll('.hot-spring-indicator');
+            indicators.forEach(indicator => {
+                indicator.addEventListener('click', () => {
+                    const tabName = indicator.getAttribute('data-tab').replace('-content', '');
+                    switchHotSpringTab(tabName);
+                    // 重置自动播放
+                    if (hotSpringAutoPlayInterval) {
+                        clearInterval(hotSpringAutoPlayInterval);
+                        hotSpringAutoPlayInterval = setInterval(nextHotSpringTab, 4000);
+                    }
+                });
+            });
+            
+            // 为标签按钮添加点击事件（保持原有功能）
+            const buttons = document.querySelectorAll('.hot-spring-tab');
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabName = button.id.replace('Btn', '');
+                    switchHotSpringTab(tabName);
+                    // 重置自动播放
+                    if (hotSpringAutoPlayInterval) {
+                        clearInterval(hotSpringAutoPlayInterval);
+                        hotSpringAutoPlayInterval = setInterval(nextHotSpringTab, 4000);
+                    }
+                });
+            });
+        }
+        
+        // 初始化轮播滚动监听器
+        function initCarouselScrollWatchers() {
+            // 创建IntersectionObserver监听器
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !entry.target.hasAttribute('data-auto-played')) {
+                        // 元素进入视窗且未启动过自动播放
+                        entry.target.setAttribute('data-auto-played', 'true');
+                        
+                        // 检查是哪个轮播区域
+                        if (entry.target.id === 'details') {
+                            // 资产详情分析轮播
+                            setTimeout(() => {
+                                toggleAutoPlay(); // 启动资产详情轮播自动播放
+                            }, 1000); // 延迟1秒启动，让用户先看到第一项
+                        } else if (entry.target.id === 'hot-spring') {
+                            // 温泉体验设施轮播
+                            setTimeout(() => {
+                                toggleHotSpringAutoPlay(); // 启动温泉体验轮播自动播放
+                            }, 1500); // 延迟1.5秒启动
+                        }
+                    }
+                });
+            }, {
+                threshold: 0.3, // 当元素30%可见时触发
+                rootMargin: '0px 0px -100px 0px' // 底部边距100px
+            });
+            
+            // 监听资产详情分析区域
+            const detailsSection = document.getElementById('details');
+            if (detailsSection) {
+                observer.observe(detailsSection);
+            }
+            
+            // 监听温泉体验设施区域
+            const hotSpringSection = document.getElementById('hot-spring');
+            if (hotSpringSection) {
+                observer.observe(hotSpringSection);
             }
         }
 
@@ -836,66 +1667,1237 @@
 
         // NFT验证功能（预留华为云数字资产链API接口）
         function verifyNFT() {
-            // TODO: 集成华为云数字资产链API
-            // 示例API调用结构：
-            /*
-            fetch('https://api.huaweicloud.com/digital-assets/verify', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
-                },
-                body: JSON.stringify({
-                    asset_id: 'SHISHANG_2024_001',
-                    asset_type: 'hot_spring_property',
-                    blockchain: 'huawei_digital_assets'
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.verified) {
-                    showNFTModal(data.nft_info);
-                } else {
-                    alert('NFT验证失败，请稍后重试');
-                }
-            })
-            .catch(error => {
-                console.error('NFT验证错误:', error);
-                alert('网络错误，请稍后重试');
-            });
-            */
-            
             // 临时演示效果
-            alert('正在连接华为云数字资产链...\n\n未来将集成真实的NFT验证接口，显示：\n• 温泉资产的数字凭证\n• 区块链交易记录\n• 资产确权信息\n• 持有者权益证明');
-        }
-
-        // 显示NFT信息的模态框（未来实现）
-        function showNFTModal(nftInfo) {
-            // TODO: 实现NFT信息展示模态框
-            console.log('NFT信息:', nftInfo);
+            alert('正在连接华为云数字资产链...\n\n未来将集成真实的NFT验证接口，显示：\n• 温泉资产的数字凭证\n• 区块链交易记录\n• 资产确权信息\n• 持有者权益证明\n\n当前展示的数据：\n项目ID：SHISHANG_2024_001\n资产类型：温泉综合体项目\n区块链网络：华为云数字资产链\n发行状态：待发行');
         }
 
         // 移动端菜单切换
         document.addEventListener('DOMContentLoaded', function() {
-            const mobileMenuButton = document.querySelector('.md\\:hidden button');
-            const mobileMenu = document.createElement('div');
-            mobileMenu.className = 'hidden md:hidden bg-white border-t border-gray-200';
-            mobileMenu.innerHTML = `
-                <div class="px-4 py-4 space-y-3">
-                    <a href="#overview" class="block text-gray-600 hover:text-hot-spring-600">资产概览</a>
-                    <a href="#hot-spring" class="block text-gray-600 hover:text-hot-spring-600">温泉体验</a>
-                    <a href="#details" class="block text-gray-600 hover:text-hot-spring-600">资产详情</a>
-                    <a href="#auction" class="block text-gray-600 hover:text-hot-spring-600">拍卖信息</a>
-                </div>
-            `;
-            
+            // 修复选择器：直接选择带有md:hidden类的button元素
+            const mobileMenuButton = document.querySelector('button.md\\:hidden');
             if (mobileMenuButton) {
-                mobileMenuButton.parentNode.parentNode.appendChild(mobileMenu);
+                const nav = mobileMenuButton.closest('nav');
+                let mobileMenu = nav.querySelector('.mobile-menu');
                 
-                mobileMenuButton.addEventListener('click', function() {
-                    mobileMenu.classList.toggle('hidden');
+                // 如果移动端菜单不存在，则创建它
+                if (!mobileMenu) {
+                    mobileMenu = document.createElement('div');
+                    mobileMenu.className = 'hidden md:hidden mobile-menu bg-white border-t border-gray-200 shadow-lg';
+                    mobileMenu.innerHTML = `
+                        <div class="px-4 py-4 space-y-3">
+                            <a href="#overview" class="block py-2 px-3 text-gray-600 hover:text-hot-spring-600 hover:bg-orange-50 rounded-lg transition">资产概览</a>
+                            <a href="#hot-spring" class="block py-2 px-3 text-gray-600 hover:text-hot-spring-600 hover:bg-orange-50 rounded-lg transition">温泉体验</a>
+                            <a href="#details" class="block py-2 px-3 text-gray-600 hover:text-hot-spring-600 hover:bg-orange-50 rounded-lg transition">资产详情</a>
+                            <a href="#building-3d" class="block py-2 px-3 text-gray-600 hover:text-hot-spring-600 hover:bg-orange-50 rounded-lg transition">3D建模</a>
+                            <a href="#auction" class="block py-2 px-3 text-gray-600 hover:text-hot-spring-600 hover:bg-orange-50 rounded-lg transition">拍卖信息</a>
+                        </div>
+                    `;
+                    nav.appendChild(mobileMenu);
+                }
+                
+                // 添加点击事件监听器
+                mobileMenuButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // 切换菜单显示状态
+                    if (mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.remove('hidden');
+                        // 更新按钮图标
+                        const icon = mobileMenuButton.querySelector('i');
+                        if (icon) {
+                            icon.className = 'fas fa-times text-gray-600';
+                        }
+                    } else {
+                        mobileMenu.classList.add('hidden');
+                        // 恢复汉堡图标
+                        const icon = mobileMenuButton.querySelector('i');
+                        if (icon) {
+                            icon.className = 'fas fa-bars text-gray-600';
+                        }
+                    }
+                });
+                
+                // 点击菜单项时关闭菜单
+                const menuLinks = mobileMenu.querySelectorAll('a');
+                menuLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        mobileMenu.classList.add('hidden');
+                        const icon = mobileMenuButton.querySelector('i');
+                        if (icon) {
+                            icon.className = 'fas fa-bars text-gray-600';
+                        }
+                    });
+                });
+                
+                // 点击页面其他地方时关闭菜单
+                document.addEventListener('click', function(e) {
+                    if (!nav.contains(e.target) && !mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                        const icon = mobileMenuButton.querySelector('i');
+                        if (icon) {
+                            icon.className = 'fas fa-bars text-gray-600';
+                        }
+                    }
                 });
             }
+        });
+
+        // Three.js 3D场景变量
+        let scene, camera, renderer, controls;
+        let buildings = [];
+        let isAnimating = false;
+        let showBuildings = true;
+        
+        // 3D场景初始化
+        function init3DScene() {
+            const canvas = document.getElementById('building3DCanvas');
+            if (!canvas) return;
+            
+            // 创建场景
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xf0f0f0);
+            
+            // 创建相机
+            camera = new THREE.PerspectiveCamera(
+                75, 
+                canvas.clientWidth / canvas.clientHeight, 
+                0.1, 
+                1000
+            );
+            
+            // 创建渲染器
+            renderer = new THREE.WebGLRenderer({ 
+                canvas: canvas, 
+                antialias: true 
+            });
+            renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            
+            // 添加控制器
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.screenSpacePanning = false;
+            controls.minDistance = 20;  // 增加最小距离
+            controls.maxDistance = 100; // 增加最大距离
+            controls.maxPolarAngle = Math.PI / 2;
+            
+            // 设置相机初始位置 - 远距离最小缩放
+            camera.position.set(0, 25, 80);
+            camera.lookAt(0, 0, 0);
+            
+            // 添加光源
+            addLighting();
+            
+            // 创建建筑群
+            createBuildings();
+            
+            // 添加地面
+            createGround();
+            
+            // 开始渲染循环
+            animate();
+            
+            // 添加窗口大小调整监听
+            window.addEventListener('resize', onWindowResize);
+            
+            console.log('3D场景初始化完成');
+        }
+        
+        // 添加优雅明亮光照
+        function addLighting() {
+            // 环境光 - 更明亮的基础照明
+            const ambientLight = new THREE.AmbientLight(0xF0F8FF, 0.6);
+            scene.add(ambientLight);
+            
+            // 主光源 - 明亮的自然光
+            const directionalLight = new THREE.DirectionalLight(0xFDF6E3, 1.0);
+            directionalLight.position.set(25, 35, 20);
+            directionalLight.castShadow = true;
+            directionalLight.shadow.mapSize.width = 4096;
+            directionalLight.shadow.mapSize.height = 4096;
+            directionalLight.shadow.camera.near = 0.5;
+            directionalLight.shadow.camera.far = 100;
+            directionalLight.shadow.camera.left = -60;
+            directionalLight.shadow.camera.right = 60;
+            directionalLight.shadow.camera.top = 60;
+            directionalLight.shadow.camera.bottom = -60;
+            scene.add(directionalLight);
+            
+            // 冷色补光 - 模拟天空反射
+            const coolLight = new THREE.DirectionalLight(0xE0F2FE, 0.4);
+            coolLight.position.set(-15, 20, -15);
+            scene.add(coolLight);
+            
+            // 建筑内暖光 - 更明亮的生活灯光
+            for (let i = 0; i < 8; i++) {
+                const light = new THREE.PointLight(0xFFF8DC, 0.4, 12);
+                light.position.set(
+                    (Math.random() - 0.5) * 50,
+                    Math.random() * 18 + 3,
+                    (Math.random() - 0.5) * 50
+                );
+                scene.add(light);
+            }
+            
+            // 添加聚光灯效果
+            const spotLight = new THREE.SpotLight(0xFFFFFF, 0.6, 30);
+            spotLight.position.set(0, 25, 0);
+            spotLight.target.position.set(0, 0, 0);
+            spotLight.angle = Math.PI / 6;
+            spotLight.penumbra = 0.3;
+            scene.add(spotLight);
+            scene.add(spotLight.target);
+            
+            // 添加天空盒效果
+            createSkybox();
+        }
+        
+        // 创建现代天空盒
+        function createSkybox() {
+            const skyGeometry = new THREE.SphereGeometry(250, 32, 32);
+            const skyMaterial = new THREE.MeshBasicMaterial({
+                color: 0xE0F8FF,
+                side: THREE.BackSide,
+                transparent: true,
+                opacity: 0.9
+            });
+            const sky = new THREE.Mesh(skyGeometry, skyMaterial);
+            scene.add(sky);
+            
+            // 添加飘动的白云
+            createFloatingClouds();
+        }
+        
+        // 创建飘动的白云
+        function createFloatingClouds() {
+            const cloudPositions = [
+                { x: -30, y: 30, z: -20 },
+                { x: 25, y: 25, z: 15 },
+                { x: -10, y: 35, z: 30 },
+                { x: 15, y: 28, z: -25 }
+            ];
+            
+            cloudPositions.forEach(pos => {
+                createCloud(pos.x, pos.y, pos.z);
+            });
+        }
+        
+        // 创建单朵云
+        function createCloud(x, y, z) {
+            const cloudGroup = new THREE.Group();
+            
+            // 云朵主体
+            const cloudGeometry = new THREE.SphereGeometry(4, 8, 6);
+            const cloudMaterial = new THREE.MeshBasicMaterial({
+                color: 0xFFFFFF,
+                transparent: true,
+                opacity: 0.6
+            });
+            
+            // 创建云朵形状
+            for (let i = 0; i < 5; i++) {
+                const cloudPart = new THREE.Mesh(cloudGeometry, cloudMaterial.clone());
+                cloudPart.position.set(
+                    (Math.random() - 0.5) * 6,
+                    (Math.random() - 0.5) * 3,
+                    (Math.random() - 0.5) * 3
+                );
+                cloudGroup.add(cloudPart);
+            }
+            
+            cloudGroup.position.set(x, y, z);
+            scene.add(cloudGroup);
+            
+            // 云朵飘动动画
+            const startTime = Date.now();
+            const animateCloud = () => {
+                const elapsed = Date.now() - startTime;
+                cloudGroup.position.x += 0.005;
+                cloudGroup.position.z += Math.sin(elapsed * 0.001) * 0.002;
+                
+                if (elapsed < 30000) { // 30秒后移除
+                    requestAnimationFrame(animateCloud);
+                } else {
+                    scene.remove(cloudGroup);
+                }
+            };
+            animateCloud();
+        }
+        
+        // 创建优雅现代建筑群
+        function createBuildings() {
+            const buildingData = [
+                { width: 8, height: 20, depth: 8, x: -15, z: -10, name: '2号楼(独栋豪宅)', type: 'luxury-villa', rotation: 0.1 },
+                { width: 8, height: 22, depth: 8, x: 15, z: -10, name: '3号楼(独栋豪宅)', type: 'luxury-villa', rotation: -0.1 },
+                { width: 7, height: 16, depth: 7, x: -10, z: 5, name: '4号楼(平层+跃层)', type: 'glass-tower', rotation: 0.05 },
+                { width: 7, height: 16, depth: 7, x: 0, z: 5, name: '5号楼(平层+跃层)', type: 'glass-tower', rotation: -0.05 },
+                { width: 6, height: 14, depth: 6, x: 10, z: 5, name: '9号楼(多层住宅)', type: 'modern-residential', rotation: 0 },
+                { width: 6, height: 14, depth: 6, x: -15, z: 15, name: '10号楼(多层住宅)', type: 'modern-residential', rotation: 0.08 },
+                { width: 6, height: 14, depth: 6, x: -5, z: 15, name: '11号楼(多层住宅)', type: 'modern-residential', rotation: -0.08 },
+                { width: 6, height: 14, depth: 6, x: 5, z: 15, name: '12号楼(多层住宅)', type: 'modern-residential', rotation: 0 },
+                { width: 5, height: 12, depth: 5, x: 15, z: 15, name: '13号楼(高层住宅)', type: 'contemporary-tower', rotation: 0.02 },
+                { width: 5, height: 10, depth: 5, x: 20, z: 0, name: '14号楼(高层住宅)', type: 'contemporary-tower', rotation: -0.02 }
+            ];
+            
+            buildingData.forEach((data, index) => {
+                const building = createRealisticBuilding(data);
+                building.position.set(data.x, data.height / 2, data.z);
+                building.castShadow = true;
+                building.receiveShadow = true;
+                
+                // 添加建筑标签
+                const label = createBuildingLabel(data.name);
+                label.position.set(data.x, data.height + 2, data.z);
+                scene.add(label);
+                
+                buildings.push(building);
+                scene.add(building);
+            });
+        }
+        
+        // 创建优雅现代建筑
+        function createRealisticBuilding(data) {
+            const group = new THREE.Group();
+            group.rotation.y = data.rotation || 0;
+            
+            switch(data.type) {
+                case 'luxury-villa':
+                    createLuxuryVilla(group, data);
+                    break;
+                case 'glass-tower':
+                    createGlassTower(group, data);
+                    break;
+                case 'modern-residential':
+                    createModernResidential(group, data);
+                    break;
+                case 'contemporary-tower':
+                    createContemporaryTower(group, data);
+                    break;
+                default:
+                    createModernResidential(group, data);
+            }
+            
+            return group;
+        }
+        
+        // 创建豪华别墅
+        function createLuxuryVilla(group, data) {
+            // 主建筑体 - 优雅的米白色
+            const mainGeometry = new THREE.BoxGeometry(data.width, data.height, data.depth);
+            const mainMaterial = createLuxuryVillaMaterial();
+            const mainBuilding = new THREE.Mesh(mainGeometry, mainMaterial);
+            group.add(mainBuilding);
+            
+            // 添加装饰性边角
+            addDecorativeCorners(group, data);
+            
+            // 添加大面积玻璃窗
+            addLargeWindows(group, data);
+            
+            // 添加阳台
+            addBalconies(group, data);
+            
+            // 添加屋顶花园
+            addRoofGarden(group, data);
+        }
+        
+        // 创建玻璃塔楼
+        function createGlassTower(group, data) {
+            // 主体结构
+            const mainGeometry = new THREE.BoxGeometry(data.width, data.height, data.depth);
+            const mainMaterial = createGlassTowerMaterial();
+            const mainBuilding = new THREE.Mesh(mainGeometry, mainMaterial);
+            group.add(mainBuilding);
+            
+            // 添加玻璃幕墙
+            addGlassCurtainWall(group, data);
+            
+            // 添加金属框架
+            addMetalFrame(group, data);
+            
+            // 添加顶部装饰
+            addTopDecoration(group, data);
+        }
+        
+        // 创建现代住宅
+        function createModernResidential(group, data) {
+            // 主建筑体
+            const mainGeometry = new THREE.BoxGeometry(data.width, data.height, data.depth);
+            const mainMaterial = createModernResidentialMaterial();
+            const mainBuilding = new THREE.Mesh(mainGeometry, mainMaterial);
+            group.add(mainBuilding);
+            
+            // 添加阳台
+            addBalconies(group, data);
+            
+            // 添加简洁窗户
+            addCleanWindows(group, data);
+            
+            // 添加简约装饰
+            addMinimalistDetails(group, data);
+        }
+        
+        // 创建当代塔楼
+        function createContemporaryTower(group, data) {
+            // 主建筑体
+            const mainGeometry = new THREE.BoxGeometry(data.width, data.height, data.depth);
+            const mainMaterial = createContemporaryTowerMaterial();
+            const mainBuilding = new THREE.Mesh(mainGeometry, mainMaterial);
+            group.add(mainBuilding);
+            
+            // 添加立体几何元素
+            addGeometricElements(group, data);
+            
+            // 添加LED装饰
+            addLEDStrips(group, data);
+            
+            // 添加倾斜元素
+            addSlantedElements(group, data);
+        }
+        
+        // 豪华别墅材质 - 优雅米白色
+        function createLuxuryVillaMaterial() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 512;
+            const context = canvas.getContext('2d');
+            
+            // 创建优雅的米白色渐变
+            const gradient = context.createLinearGradient(0, 0, 512, 512);
+            gradient.addColorStop(0, '#F8F6F0');  // 温暖的象牙白
+            gradient.addColorStop(0.3, '#E8E5E0'); // 柔和的米色
+            gradient.addColorStop(0.6, '#D6D3D0'); // 浅灰色
+            gradient.addColorStop(1, '#A8A29E');  // 温暖的灰色
+            
+            context.fillStyle = gradient;
+            context.fillRect(0, 0, 512, 512);
+            
+            // 添加微妙的纹理
+            context.strokeStyle = 'rgba(255, 248, 220, 0.2)';
+            context.lineWidth = 0.5;
+            for (let i = 0; i < 30; i++) {
+                context.beginPath();
+                context.moveTo(Math.random() * 512, Math.random() * 512);
+                context.lineTo(Math.random() * 512, Math.random() * 512);
+                context.stroke();
+            }
+            
+            const texture = new THREE.CanvasTexture(canvas);
+            return new THREE.MeshPhongMaterial({
+                map: texture,
+                shininess: 10,
+                transparent: true,
+                opacity: 0.95
+            });
+        }
+        
+        // 玻璃塔楼材质 - 现代蓝色
+        function createGlassTowerMaterial() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 512;
+            const context = canvas.getContext('2d');
+            
+            // 创建现代蓝色渐变
+            const gradient = context.createLinearGradient(0, 0, 512, 512);
+            gradient.addColorStop(0, '#E0F2FE');  // 浅天蓝
+            gradient.addColorStop(0.3, '#7DD3FC'); // 明亮的蓝色
+            gradient.addColorStop(0.6, '#0284C7'); // 蓝色
+            gradient.addColorStop(1, '#0EA5E9');  // 深蓝色
+            
+            context.fillStyle = gradient;
+            context.fillRect(0, 0, 512, 512);
+            
+            // 添加玻璃反射效果
+            context.fillStyle = 'rgba(255, 255, 255, 0.3)';
+            context.fillRect(0, 0, 200, 512);
+            
+            const texture = new THREE.CanvasTexture(canvas);
+            return new THREE.MeshPhongMaterial({
+                map: texture,
+                transparent: true,
+                opacity: 0.8,
+                shininess: 100
+            });
+        }
+        
+        // 现代住宅材质 - 温暖的灰色
+        function createModernResidentialMaterial() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 512;
+            const context = canvas.getContext('2d');
+            
+            // 创建温暖的灰色渐变
+            const gradient = context.createLinearGradient(0, 0, 512, 512);
+            gradient.addColorStop(0, '#F5F5F4');  // 极浅灰
+            gradient.addColorStop(0.3, '#E7E5E4'); // 浅灰
+            gradient.addColorStop(0.6, '#A8A29E'); // 温暖灰
+            gradient.addColorStop(1, '#78716C');   // 深灰
+            
+            context.fillStyle = gradient;
+            context.fillRect(0, 0, 512, 512);
+            
+            const texture = new THREE.CanvasTexture(canvas);
+            return new THREE.MeshPhongMaterial({
+                map: texture,
+                shininess: 30,
+                transparent: true,
+                opacity: 0.9
+            });
+        }
+        
+        // 当代塔楼材质 - 深色优雅
+        function createContemporaryTowerMaterial() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 512;
+            const context = canvas.getContext('2d');
+            
+            // 创建深色优雅渐变
+            const gradient = context.createLinearGradient(0, 0, 512, 512);
+            gradient.addColorStop(0, '#374151');  // 深灰蓝
+            gradient.addColorStop(0.3, '#1F2937'); // 深蓝灰
+            gradient.addColorStop(0.6, '#111827'); // 几乎黑色
+            gradient.addColorStop(1, '#000000');   // 纯黑
+            
+            context.fillStyle = gradient;
+            context.fillRect(0, 0, 512, 512);
+            
+            // 添加金属质感
+            context.fillStyle = 'rgba(200, 200, 200, 0.1)';
+            for (let i = 0; i < 20; i++) {
+                context.fillRect(
+                    Math.random() * 512,
+                    Math.random() * 512,
+                    5 + Math.random() * 10,
+                    1
+                );
+            }
+            
+            const texture = new THREE.CanvasTexture(canvas);
+            return new THREE.MeshPhongMaterial({
+                map: texture,
+                shininess: 80,
+                transparent: true,
+                opacity: 0.85
+            });
+        }
+        
+        // 添加装饰性边角
+        function addDecorativeCorners(group, data) {
+            const cornerGeometry = new THREE.BoxGeometry(0.3, data.height, 0.3);
+            const cornerMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0x8B7355,
+                shininess: 20
+            });
+            
+            // 四个角落
+            const corners = [
+                { x: data.width/2 - 0.15, z: data.depth/2 - 0.15 },
+                { x: -data.width/2 + 0.15, z: data.depth/2 - 0.15 },
+                { x: data.width/2 - 0.15, z: -data.depth/2 + 0.15 },
+                { x: -data.width/2 + 0.15, z: -data.depth/2 + 0.15 }
+            ];
+            
+            corners.forEach(corner => {
+                const cornerMesh = new THREE.Mesh(cornerGeometry, cornerMaterial);
+                cornerMesh.position.set(corner.x, data.height/2, corner.z);
+                group.add(cornerMesh);
+            });
+        }
+        
+        // 添加大面积玻璃窗
+        function addLargeWindows(group, data) {
+            const windowGeometry = new THREE.PlaneGeometry(1.2, 2.0);
+            const windowMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0x1E40AF,
+                transparent: true,
+                opacity: 0.7,
+                shininess: 50
+            });
+            
+            // 主立面大窗
+            for (let floor = 2; floor < data.height - 2; floor += 3) {
+                const window = new THREE.Mesh(windowGeometry, windowMaterial.clone());
+                window.position.set(0, floor, data.depth/2 + 0.01);
+                group.add(window);
+            }
+        }
+        
+        // 添加阳台
+        function addBalconies(group, data) {
+            const balconyGeometry = new THREE.BoxGeometry(1.0, 0.1, 0.5);
+            const balconyMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0xD1D5DB,
+                shininess: 10
+            });
+            
+            for (let floor = 3; floor < data.height; floor += 4) {
+                const balcony = new THREE.Mesh(balconyGeometry, balconyMaterial);
+                balcony.position.set(data.width/2 + 0.3, floor, 0);
+                group.add(balcony);
+                
+                // 阳台护栏
+                const railGeometry = new THREE.BoxGeometry(1.0, 0.8, 0.05);
+                const railMaterial = new THREE.MeshPhongMaterial({ color: 0x6B7280 });
+                const rail = new THREE.Mesh(railGeometry, railMaterial);
+                rail.position.set(data.width/2 + 0.3, floor + 0.45, 0);
+                group.add(rail);
+            }
+        }
+        
+        // 添加屋顶花园
+        function addRoofGarden(group, data) {
+            const gardenGeometry = new THREE.CylinderGeometry(
+                Math.max(data.width, data.depth) * 0.4,
+                Math.max(data.width, data.depth) * 0.6,
+                0.3,
+                6
+            );
+            const gardenMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0x22C55E,
+                transparent: true,
+                opacity: 0.8
+            });
+            const garden = new THREE.Mesh(gardenGeometry, gardenMaterial);
+            garden.position.y = data.height + 0.15;
+            group.add(garden);
+        }
+        
+        // 添加玻璃幕墙
+        function addGlassCurtainWall(group, data) {
+            const glassGeometry = new THREE.PlaneGeometry(data.width * 0.8, data.height * 0.8);
+            const glassMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0x87CEEB,
+                transparent: true,
+                opacity: 0.6,
+                shininess: 100
+            });
+            
+            // 主立面玻璃
+            const mainGlass = new THREE.Mesh(glassGeometry, glassMaterial);
+            mainGlass.position.set(0, data.height/2, data.depth/2 + 0.01);
+            group.add(mainGlass);
+        }
+        
+        // 添加金属框架
+        function addMetalFrame(group, data) {
+            const frameGeometry = new THREE.BoxGeometry(0.1, data.height, 0.1);
+            const frameMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0xC0C0C0,
+                shininess: 80
+            });
+            
+            // 垂直框架
+            const leftFrame = new THREE.Mesh(frameGeometry, frameMaterial);
+            leftFrame.position.set(-data.width/2 + 0.05, data.height/2, 0);
+            group.add(leftFrame);
+            
+            const rightFrame = new THREE.Mesh(frameGeometry, frameMaterial);
+            rightFrame.position.set(data.width/2 - 0.05, data.height/2, 0);
+            group.add(rightFrame);
+        }
+        
+        // 添加顶部装饰
+        function addTopDecoration(group, data) {
+            const decorationGeometry = new THREE.CylinderGeometry(0.3, 0.3, 2);
+            const decorationMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0xFFD700,
+                shininess: 100
+            });
+            const decoration = new THREE.Mesh(decorationGeometry, decorationMaterial);
+            decoration.position.y = data.height + 1;
+            group.add(decoration);
+        }
+        
+        // 添加简洁窗户
+        function addCleanWindows(group, data) {
+            const windowGeometry = new THREE.PlaneGeometry(0.8, 1.2);
+            const windowMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0x4A90E2,
+                transparent: true,
+                opacity: 0.75
+            });
+            
+            for (let floor = 2; floor < data.height - 2; floor += 2.5) {
+                const window = new THREE.Mesh(windowGeometry, windowMaterial.clone());
+                window.position.set(0, floor, data.depth/2 + 0.01);
+                group.add(window);
+            }
+        }
+        
+        // 添加简约装饰
+        function addMinimalistDetails(group, data) {
+            const detailGeometry = new THREE.BoxGeometry(data.width * 0.9, 0.1, 0.1);
+            const detailMaterial = new THREE.MeshPhongMaterial({ color: 0x6B7280 });
+            
+            for (let floor = 4; floor < data.height; floor += 6) {
+                const detail = new THREE.Mesh(detailGeometry, detailMaterial);
+                detail.position.set(0, floor, data.depth/2 + 0.05);
+                group.add(detail);
+            }
+        }
+        
+        // 添加立体几何元素
+        function addGeometricElements(group, data) {
+            const elementGeometry = new THREE.BoxGeometry(1, 0.5, 0.5);
+            const elementMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0xDC2626,
+                shininess: 60
+            });
+            
+            // 交错排列的几何元素
+            for (let i = 0; i < 3; i++) {
+                const element = new THREE.Mesh(elementGeometry, elementMaterial);
+                element.position.set(
+                    (i % 2 === 0 ? 1 : -1) * (data.width/2 - 0.5),
+                    data.height * 0.7 + i * 1,
+                    0
+                );
+                group.add(element);
+            }
+        }
+        
+        // 添加LED装饰
+        function addLEDStrips(group, data) {
+            const ledGeometry = new THREE.BoxGeometry(data.width * 0.95, 0.05, 0.05);
+            const ledMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0x00FFFF,
+                transparent: true,
+                opacity: 0.8
+            });
+            
+            const ledStrip = new THREE.Mesh(ledGeometry, ledMaterial);
+            ledStrip.position.set(0, data.height * 0.8, data.depth/2 + 0.05);
+            group.add(ledStrip);
+        }
+        
+        // 添加倾斜元素
+        function addSlantedElements(group, data) {
+            const elementGeometry = new THREE.BoxGeometry(0.3, 2, 0.3);
+            const elementMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0x1F2937,
+                shininess: 30
+            });
+            
+            const element = new THREE.Mesh(elementGeometry, elementMaterial);
+            element.position.set(data.width/2 - 0.3, data.height/2, 0);
+            element.rotation.z = 0.3;
+            group.add(element);
+        }
+        
+        // 创建优雅现代建筑标签
+        function createBuildingLabel(text) {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.width = 500;
+            canvas.height = 120;
+            
+            // 现代渐变背景
+            const gradient = context.createLinearGradient(0, 0, 500, 120);
+            gradient.addColorStop(0, 'rgba(255, 255, 255, 0.95)');
+            gradient.addColorStop(0.5, 'rgba(240, 248, 255, 0.9)');
+            gradient.addColorStop(1, 'rgba(230, 242, 255, 0.85)');
+            context.fillStyle = gradient;
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // 现代边框
+            context.strokeStyle = '#3B82F6';
+            context.lineWidth = 3;
+            context.shadowColor = 'rgba(59, 130, 246, 0.3)';
+            context.shadowBlur = 10;
+            context.strokeRect(3, 3, canvas.width - 6, canvas.height - 6);
+            context.shadowBlur = 0;
+            
+            // 主标题
+            context.fillStyle = '#1E40AF';
+            context.font = 'bold 22px "Arial", "Helvetica", sans-serif';
+            context.textAlign = 'center';
+            context.fillText(text, canvas.width / 2, 35);
+            
+            // 副标题
+            context.font = '16px "Arial", "Helvetica", sans-serif';
+            context.fillStyle = '#6B7280';
+            context.fillText('顺景·石上清泉', canvas.width / 2, 60);
+            
+            // 建筑类型标识
+            context.font = '12px "Arial", "Helvetica", sans-serif';
+            context.fillStyle = '#059669';
+            const buildingType = text.includes('独栋') ? '豪华别墅' : 
+                               text.includes('平层') ? '高端住宅' : 
+                               text.includes('多层') ? '现代住宅' : '当代塔楼';
+            context.fillText(`类型：${buildingType}`, canvas.width / 2, 85);
+            
+            const texture = new THREE.CanvasTexture(canvas);
+            const material = new THREE.SpriteMaterial({ 
+                map: texture,
+                transparent: true,
+                depthTest: false
+            });
+            const sprite = new THREE.Sprite(material);
+            sprite.scale.set(15, 4.5, 1);
+            
+            return sprite;
+        }
+        
+        // 创建优雅明亮地面
+        function createGround() {
+            // 主地面
+            const groundGeometry = new THREE.PlaneGeometry(100, 100);
+            const groundMaterial = createElegantGroundMaterial();
+            const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+            ground.rotation.x = -Math.PI / 2;
+            ground.receiveShadow = true;
+            scene.add(ground);
+            
+            // 添加优雅人行道
+            createElegantSidewalks();
+            
+            // 添加精致绿化
+            createRefinedLandscaping();
+            
+            // 添加现代街道
+            createModernStreets();
+        }
+        
+        // 创建优雅地面材质
+        function createElegantGroundMaterial() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 1024;
+            canvas.height = 1024;
+            const context = canvas.getContext('2d');
+            
+            // 创建优雅的绿色渐变
+            const gradient = context.createLinearGradient(0, 0, 1024, 1024);
+            gradient.addColorStop(0, '#F0FDF4');  // 极浅绿
+            gradient.addColorStop(0.3, '#DCFCE7'); // 浅绿
+            gradient.addColorStop(0.6, '#86EFAC'); // 明亮绿
+            gradient.addColorStop(1, '#22C55E');   // 鲜艳绿
+            
+            context.fillStyle = gradient;
+            context.fillRect(0, 0, 1024, 1024);
+            
+            // 添加精致的草地纹理
+            context.fillStyle = 'rgba(255, 255, 255, 0.15)';
+            for (let i = 0; i < 3000; i++) {
+                context.beginPath();
+                context.arc(
+                    Math.random() * 1024,
+                    Math.random() * 1024,
+                    Math.random() * 2 + 0.5,
+                    0,
+                    2 * Math.PI
+                );
+                context.fill();
+            }
+            
+            // 添加小花点缀
+            const flowerColors = ['#FFB6C1', '#DDA0DD', '#FFE4B5'];
+            for (let i = 0; i < 50; i++) {
+                context.fillStyle = flowerColors[Math.floor(Math.random() * flowerColors.length)];
+                context.beginPath();
+                context.arc(
+                    Math.random() * 1024,
+                    Math.random() * 1024,
+                    Math.random() * 4 + 2,
+                    0,
+                    2 * Math.PI
+                );
+                context.fill();
+            }
+            
+            const texture = new THREE.CanvasTexture(canvas);
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+            texture.repeat.set(6, 6);
+            
+            return new THREE.MeshPhongMaterial({
+                map: texture,
+                shininess: 5,
+                transparent: true,
+                opacity: 0.9
+            });
+        }
+        
+        // 创建优雅人行道
+        function createElegantSidewalks() {
+            const sidewalkGeometry = new THREE.PlaneGeometry(70, 5);
+            const sidewalkMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0xF5F5F5,
+                shininess: 20,
+                transparent: true,
+                opacity: 0.95
+            });
+            
+            // 横向人行道
+            const horizontalSidewalk = new THREE.Mesh(sidewalkGeometry, sidewalkMaterial);
+            horizontalSidewalk.rotation.x = -Math.PI / 2;
+            horizontalSidewalk.position.y = 0.01;
+            scene.add(horizontalSidewalk);
+            
+            // 纵向人行道
+            const verticalSidewalk = new THREE.Mesh(sidewalkGeometry, sidewalkMaterial);
+            verticalSidewalk.rotation.x = -Math.PI / 2;
+            verticalSidewalk.rotation.z = Math.PI / 2;
+            verticalSidewalk.position.y = 0.01;
+            scene.add(verticalSidewalk);
+            
+            // 添加人行道砖块纹理
+            createSidewalkPattern(horizontalSidewalk);
+            createSidewalkPattern(verticalSidewalk);
+        }
+        
+        // 创建人行道图案
+        function createSidewalkPattern(sidewalk) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 512;
+            const context = canvas.getContext('2d');
+            
+            // 创建砖块图案
+            context.fillStyle = '#E5E5E5';
+            context.fillRect(0, 0, 512, 512);
+            
+            context.strokeStyle = '#D1D5DB';
+            context.lineWidth = 2;
+            
+            // 横向砖块
+            for (let y = 0; y < 512; y += 64) {
+                context.beginPath();
+                context.moveTo(0, y);
+                context.lineTo(512, y);
+                context.stroke();
+            }
+            
+            // 纵向分割线
+            for (let x = 0; x < 512; x += 128) {
+                context.beginPath();
+                context.moveTo(x, 0);
+                context.lineTo(x, 512);
+                context.stroke();
+            }
+            
+            const texture = new THREE.CanvasTexture(canvas);
+            sidewalk.material.map = texture;
+        }
+        
+        // 创建精致绿化
+        function createRefinedLandscaping() {
+            // 添加精品树木
+            const treePositions = [
+                { x: -25, z: -20 }, { x: 25, z: -20 },
+                { x: -25, z: 25 }, { x: 25, z: 25 },
+                { x: 0, z: -25 }, { x: 0, z: 30 }
+            ];
+            
+            treePositions.forEach(pos => {
+                const tree = createRefinedTree();
+                tree.position.set(pos.x, 0, pos.z);
+                scene.add(tree);
+            });
+            
+            // 添加装饰性灌木丛
+            for (let i = 0; i < 30; i++) {
+                const bush = createOrnamentalBush();
+                bush.position.set(
+                    (Math.random() - 0.5) * 50,
+                    0,
+                    (Math.random() - 0.5) * 50
+                );
+                scene.add(bush);
+            }
+            
+            // 添加花朵装饰
+            createFlowerBeds();
+        }
+        
+        // 创建精品树木
+        function createRefinedTree() {
+            const tree = new THREE.Group();
+            
+            // 优雅树干
+            const trunkGeometry = new THREE.CylinderGeometry(0.3, 0.4, 5);
+            const trunkMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0x8B4513,
+                shininess: 10
+            });
+            const trunk = new THREE.Mesh(trunkGeometry, trunkMaterial);
+            trunk.position.y = 2.5;
+            tree.add(trunk);
+            
+            // 多层树冠
+            const leavesGeometry1 = new THREE.SphereGeometry(3, 12, 8);
+            const leavesMaterial1 = new THREE.MeshPhongMaterial({ 
+                color: 0x22C55E,
+                shininess: 20
+            });
+            const leaves1 = new THREE.Mesh(leavesGeometry1, leavesMaterial1);
+            leaves1.position.y = 5;
+            tree.add(leaves1);
+            
+            const leavesGeometry2 = new THREE.SphereGeometry(2, 10, 6);
+            const leavesMaterial2 = new THREE.MeshPhongMaterial({ 
+                color: 0x16A34A,
+                shininess: 15
+            });
+            const leaves2 = new THREE.Mesh(leavesGeometry2, leavesMaterial2);
+            leaves2.position.y = 6.5;
+            tree.add(leaves2);
+            
+            return tree;
+        }
+        
+        // 创建装饰性灌木
+        function createOrnamentalBush() {
+            const bushGeometry = new THREE.SphereGeometry(1.2, 8, 6);
+            const bushMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0x059669,
+                shininess: 5
+            });
+            const bush = new THREE.Mesh(bushGeometry, bushMaterial);
+            bush.position.y = 0.6;
+            return bush;
+        }
+        
+        // 创建花坛
+        function createFlowerBeds() {
+            const flowerColors = ['#F472B6', '#A78BFA', '#34D399', '#FBBF24'];
+            
+            for (let i = 0; i < 8; i++) {
+                const flowerGeometry = new THREE.CylinderGeometry(2, 2.5, 0.3);
+                const flowerMaterial = new THREE.MeshPhongMaterial({ 
+                    color: flowerColors[i % flowerColors.length],
+                    shininess: 30
+                });
+                const flower = new THREE.Mesh(flowerGeometry, flowerMaterial);
+                flower.position.set(
+                    (Math.random() - 0.5) * 40,
+                    0.15,
+                    (Math.random() - 0.5) * 40
+                );
+                scene.add(flower);
+            }
+        }
+        
+        // 创建现代街道
+        function createModernStreets() {
+            const streetGeometry = new THREE.PlaneGeometry(10, 90);
+            const streetMaterial = createModernStreetMaterial();
+            
+            // 主街道
+            const mainStreet = new THREE.Mesh(streetGeometry, streetMaterial);
+            mainStreet.rotation.x = -Math.PI / 2;
+            mainStreet.position.y = -0.01;
+            scene.add(mainStreet);
+            
+            // 横向街道
+            const crossStreet = new THREE.Mesh(streetGeometry, streetMaterial);
+            crossStreet.rotation.x = -Math.PI / 2;
+            crossStreet.rotation.z = Math.PI / 2;
+            crossStreet.position.y = -0.01;
+            scene.add(crossStreet);
+            
+            // 添加现代道路标线
+            createModernRoadMarkings();
+        }
+        
+        // 创建现代街道材质
+        function createModernStreetMaterial() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 512;
+            const context = canvas.getContext('2d');
+            
+            // 创建现代街道渐变
+            const gradient = context.createLinearGradient(0, 0, 512, 512);
+            gradient.addColorStop(0, '#4B5563');
+            gradient.addColorStop(0.5, '#374151');
+            gradient.addColorStop(1, '#1F2937');
+            
+            context.fillStyle = gradient;
+            context.fillRect(0, 0, 512, 512);
+            
+            // 添加路面纹理
+            context.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+            context.lineWidth = 1;
+            for (let i = 0; i < 100; i++) {
+                context.beginPath();
+                context.moveTo(Math.random() * 512, Math.random() * 512);
+                context.lineTo(Math.random() * 512, Math.random() * 512);
+                context.stroke();
+            }
+            
+            const texture = new THREE.CanvasTexture(canvas);
+            return new THREE.MeshPhongMaterial({
+                map: texture,
+                shininess: 40,
+                transparent: true,
+                opacity: 0.95
+            });
+        }
+        
+        // 创建现代道路标线
+        function createModernRoadMarkings() {
+            const lineGeometry = new THREE.PlaneGeometry(0.15, 3);
+            const lineMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0xFFFFFF,
+                transparent: true,
+                opacity: 0.9
+            });
+            
+            // 主车道分隔线
+            for (let i = -35; i <= 35; i += 5) {
+                const line = new THREE.Mesh(lineGeometry, lineMaterial);
+                line.rotation.x = -Math.PI / 2;
+                line.position.set(0, 0, i);
+                scene.add(line);
+            }
+            
+            // 边缘线
+            const edgeGeometry = new THREE.PlaneGeometry(0.1, 90);
+            const edgeMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0xFFD700,
+                transparent: true,
+                opacity: 0.8
+            });
+            
+            const leftEdge = new THREE.Mesh(edgeGeometry, edgeMaterial);
+            leftEdge.rotation.x = -Math.PI / 2;
+            leftEdge.position.set(-5, 0, 0);
+            scene.add(leftEdge);
+            
+            const rightEdge = new THREE.Mesh(edgeGeometry, edgeMaterial);
+            rightEdge.rotation.x = -Math.PI / 2;
+            rightEdge.position.set(5, 0, 0);
+            scene.add(rightEdge);
+        }
+        
+        // 渲染循环
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            const time = Date.now() * 0.001;
+            
+            // 自动旋转动画
+            if (isAnimating) {
+                buildings.forEach((building, index) => {
+                    if (building.visible) {
+                        building.rotation.y += 0.005 * (index + 1);
+                        
+                        // 添加窗户闪烁效果（只对建筑组有效）
+                        if (building.children && building.children.length > 0) {
+                            building.children.forEach(child => {
+                                if (child.material && child.material.emissive !== undefined) {
+                                    child.material.emissive = new THREE.Color(0x001122);
+                                    child.material.emissiveIntensity = 0.1 + 0.05 * Math.sin(time * 2 + index);
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+            
+            // 添加飘动的云朵效果
+            if (Math.sin(time) > 0.98) {
+                addCloud();
+            }
+            
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        
+        // 添加云朵
+        function addCloud() {
+            const cloudGeometry = new THREE.PlaneGeometry(8, 4);
+            const cloudMaterial = new THREE.MeshBasicMaterial({
+                color: 0xFFFFFF,
+                transparent: true,
+                opacity: 0.3
+            });
+            const cloud = new THREE.Mesh(cloudGeometry, cloudMaterial);
+            cloud.position.set(
+                (Math.random() - 0.5) * 100,
+                20 + Math.random() * 10,
+                (Math.random() - 0.5) * 100
+            );
+            scene.add(cloud);
+            
+            // 云朵飘动动画
+            const startTime = Date.now();
+            const animateCloud = () => {
+                const elapsed = Date.now() - startTime;
+                cloud.position.x += 0.1;
+                cloud.material.opacity = 0.3 * (1 - elapsed / 10000);
+                
+                if (elapsed < 10000) {
+                    requestAnimationFrame(animateCloud);
+                } else {
+                    scene.remove(cloud);
+                }
+            };
+            animateCloud();
+        }
+        
+        // 窗口大小调整
+        function onWindowResize() {
+            const canvas = document.getElementById('building3DCanvas');
+            if (!canvas || !camera || !renderer) return;
+            
+            camera.aspect = canvas.clientWidth / canvas.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+        }
+        
+        // 重置相机视角
+        function resetCamera() {
+            if (camera && controls) {
+                camera.position.set(0, 15, 20);
+                camera.lookAt(0, 0, 0);
+                controls.reset();
+            }
+        }
+        
+        // 切换线框模式
+        function toggleWireframe() {
+            const btn = document.getElementById('wireframeBtn');
+            buildings.forEach(building => {
+                building.material.wireframe = !building.material.wireframe;
+            });
+            btn.textContent = building.material.wireframe ? '实体模式' : '线框模式';
+        }
+        
+        // 切换动画
+        function toggleAnimation() {
+            const btn = document.getElementById('animBtn');
+            isAnimating = !isAnimating;
+            btn.textContent = isAnimating ? '停止动画' : '旋转动画';
+            btn.className = isAnimating ? 
+                'bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm' : 
+                'bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm';
+        }
+        
+        // 切换建筑显示
+        function toggleBuildings() {
+            const btn = document.getElementById('buildingsBtn');
+            showBuildings = !showBuildings;
+            buildings.forEach(building => {
+                building.visible = showBuildings;
+            });
+            btn.textContent = showBuildings ? '隐藏建筑' : '显示建筑';
+            btn.className = showBuildings ? 
+                'bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 rounded text-sm' : 
+                'bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm';
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(init3DScene, 1000); // 延迟初始化确保DOM完全加载
+            initHotSpringCarousel(); // 初始化温泉轮播
+            initCarouselScrollWatchers(); // 初始化滚动监听器
         });
     </script>
 </body>
