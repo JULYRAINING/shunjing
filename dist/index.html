@@ -1582,8 +1582,44 @@
             // 创建IntersectionObserver监听器
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting && !entry.target.hasAttribute('data-auto-played')) {
-                        // 元素进入视窗且未启动过自动播放
+                    if (!entry.isIntersecting && entry.target.hasAttribute('data-auto-played')) {
+                        // 元素离开视窗且已启动过自动播放时停止
+                        entry.target.removeAttribute('data-auto-played');
+                        
+                        // 检查是哪个轮播区域
+                        if (entry.target.id === 'details') {
+                            // 停止资产详情分析轮播
+                            if (autoPlayInterval) {
+                                clearInterval(autoPlayInterval);
+                                autoPlayInterval = null;
+                                // 恢复按钮状态
+                                const playIcon = document.getElementById('playIcon');
+                                const playText = document.getElementById('playText');
+                                const autoPlayBtn = document.getElementById('autoPlayBtn');
+                                if (playIcon && playText && autoPlayBtn) {
+                                    playIcon.className = 'fas fa-play mr-2';
+                                    playText.textContent = '自动播放';
+                                    autoPlayBtn.className = 'bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full transition flex items-center';
+                                }
+                            }
+                        } else if (entry.target.id === 'hot-spring') {
+                            // 停止温泉体验设施轮播
+                            if (hotSpringAutoPlayInterval) {
+                                clearInterval(hotSpringAutoPlayInterval);
+                                hotSpringAutoPlayInterval = null;
+                                // 恢复按钮状态
+                                const btn = document.getElementById('hotSpringAutoPlayBtn');
+                                const icon = document.getElementById('hotSpringPlayIcon');
+                                const text = document.getElementById('hotSpringPlayText');
+                                if (btn && icon && text) {
+                                    icon.className = 'fas fa-play mr-2';
+                                    text.textContent = '自动播放';
+                                    btn.className = 'bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-full transition flex items-center';
+                                }
+                            }
+                        }
+                    } else if (entry.isIntersecting && !entry.target.hasAttribute('data-auto-played')) {
+                        // 元素进入视窗且未启动过自动播放时启动
                         entry.target.setAttribute('data-auto-played', 'true');
                         
                         // 检查是哪个轮播区域
@@ -1601,7 +1637,7 @@
                     }
                 });
             }, {
-                threshold: 0.05, // 当元素5%可见时触发
+                threshold: 0.05, // 当元素5%可见/不可见时触发
                 rootMargin: '0px 0px -100px 0px' // 底部边距100px
             });
             
