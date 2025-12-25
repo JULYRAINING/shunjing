@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>顺景·石上清泉 - 数字温泉资产</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'hot-spring': {
+                            50: '#fff7ed',
+                            100: '#ffedd5',
+                            500: '#f97316',
+                            600: '#ea580c',
+                            700: '#c2410c'
+                        },
+                        'luxury-gold': {
+                            500: '#d97706',
+                            600: '#b45309',
+                            700: '#92400e'
+                        }
+                    },
+                    fontFamily: {
+                        'chinese': ['PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 50%, #1e40af 100%);
+        }
+        .hot-spring-gradient {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 50%, #dc2626 100%);
+        }
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .data-counter {
+            font-variant-numeric: tabular-nums;
+        }
+    </style>
+</head>
+<body class="font-chinese bg-gray-50">
+    <!-- 导航栏 -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 bg-gradient-to-br from-hot-spring-500 to-hot-spring-700 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-spa text-white text-sm"></i>
+                    </div>
+                    <span class="text-xl font-bold text-gray-900">石上清泉</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#overview" class="text-gray-600 hover:text-hot-spring-600 transition">资产概览</a>
+                    <a href="#hot-spring" class="text-gray-600 hover:text-hot-spring-600 transition">温泉体验</a>
+                    <a href="#details" class="text-gray-600 hover:text-hot-spring-600 transition">资产详情</a>
+                    <a href="#auction" class="text-gray-600 hover:text-hot-spring-600 transition">拍卖信息</a>
+                </div>
+                <button class="md:hidden">
+                    <i class="fas fa-bars text-gray-600"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 英雄头图区 -->
+    <section class="hero-gradient min-h-screen flex items-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-black/20"></div>
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+            <div class="mb-8">
+                <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-hot-spring-500/20 text-white border border-hot-spring-300/30">
+                    <i class="fas fa-gavel mr-2"></i>
+                    变卖阶段 · 稀缺资产
+                </span>
+            </div>
+            <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+                顺景·石上清泉
+                <span class="block text-2xl md:text-4xl font-light mt-2 text-blue-200">
+                    北京四环内唯一温泉豪宅
+                </span>
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 text-blue-100 max-w-3xl mx-auto leading-relaxed">
+                四环内永久绿化带包围 • 稀缺温泉资源 • 18万㎡综合体型 • 数字资产化投资标的
+            </p>
+            
+            <!-- 核心数据展示 -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 mb-12 max-w-4xl mx-auto">
+                <div class="glass-effect rounded-xl p-4 md:p-6">
+                    <div class="text-2xl md:text-3xl font-bold text-hot-spring-400 data-counter">27.37</div>
+                    <div class="text-sm md:text-base text-blue-200">变卖价格（亿元）</div>
+                </div>
+                <div class="glass-effect rounded-xl p-4 md:p-6">
+                    <div class="text-2xl md:text-3xl font-bold text-hot-spring-400 data-counter">52,532</div>
+                    <div class="text-sm md:text-base text-blue-200">温泉世界（㎡）</div>
+                </div>
+                <div class="glass-effect rounded-xl p-4 md:p-6">
+                    <div class="text-2xl md:text-3xl font-bold text-hot-spring-400 data-counter">43.12</div>
+                    <div class="text-sm md:text-base text-blue-200">占地面积（万㎡）</div>
+                </div>
+                <div class="glass-effect rounded-xl p-4 md:p-6">
+                    <div class="text-2xl md:text-3xl font-bold text-hot-spring-400 data-counter">96</div>
+                    <div class="text-sm md:text-base text-blue-200">剩余住宅（套）</div>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button onclick="scrollToSection('overview')" class="bg-hot-spring-500 hover:bg-hot-spring-600 text-white px-8 py-4 rounded-xl font-semibold transition flex items-center justify-center">
+                    <i class="fas fa-chart-line mr-2"></i>
+                    投资分析
+                </button>
+                <button onclick="verifyNFT()" class="bg-white/20 hover:bg-white/30 text-white px-8 py-4 rounded-xl font-semibold transition border border-white/30 flex items-center justify-center">
+                    <i class="fas fa-certificate mr-2"></i>
+                    查看数字资产凭证
+                </button>
+            </div>
+        </div>
+        
+        <!-- 背景装饰 -->
+        <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-gray-50 to-transparent"></div>
+    </section>
+
+    <!-- 资产概览 -->
+    <section id="overview" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">核心资产概览</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    北京四环内唯一温泉豪宅项目，融合住宅、商业、温泉、酒店的综合体型资产
+                </p>
+            </div>
+
+            <!-- 地理位置 -->
+            <div class="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl p-6 md:p-8 mb-12">
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                            <i class="fas fa-map-marker-alt text-red-500 mr-3"></i>
+                            黄金地理位置
+                        </h3>
+                        <p class="text-lg text-gray-700 mb-4">
+                            位于北京市朝阳区东四环与北四环交口处，是四环内唯一被城市永久绿化带包围的豪宅项目
+                        </p>
+                        <div class="space-y-2">
+                            <div class="flex items-center text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                四环内稀缺位置
+                            </div>
+                            <div class="flex items-center text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                永久绿化带包围
+                            </div>
+                            <div class="flex items-center text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                交通便利配套完善
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 text-center">
+                        <div class="text-3xl font-bold text-gray-900 mb-2">17万+/㎡</div>
+                        <div class="text-gray-600 mb-4">周边豪宅市场价</div>
+                        <div class="text-lg text-hot-spring-600 font-semibold">项目潜力可达13-14万/㎡</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 核心数据卡片 -->
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-2xl shadow-lg p-6 card-hover border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold text-gray-900">住宅资产</h3>
+                        <i class="fas fa-home text-2xl text-blue-500"></i>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">剩余套数</span>
+                            <span class="font-semibold">96套</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">总面积</span>
+                            <span class="font-semibold">5.13万㎡</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">面积区间</span>
+                            <span class="font-semibold">232-2172㎡</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">产品类型</span>
+                            <span class="font-semibold text-hot-spring-600">改善型+豪宅</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-lg p-6 card-hover border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold text-gray-900">温泉设施</h3>
+                        <i class="fas fa-spa text-2xl text-hot-spring-500"></i>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">温泉酒店</span>
+                            <span class="font-semibold">104间客房</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">温泉面积</span>
+                            <span class="font-semibold">6,000㎡</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">地下水世界</span>
+                            <span class="font-semibold">52,532㎡</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">餐饮配套</span>
+                            <span class="font-semibold">8,400㎡</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-lg p-6 card-hover border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold text-gray-900">投资价值</h3>
+                        <i class="fas fa-chart-line text-2xl text-green-500"></i>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">资产评估</span>
+                            <span class="font-semibold">46.07亿元</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">变卖价格</span>
+                            <span class="font-semibold text-hot-spring-600">27.37亿元</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">投资空间</span>
+                            <span class="font-semibold text-green-600">约20亿元</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">潜在单价</span>
+                            <span class="font-semibold">13-14万/㎡</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 温泉体验 -->
+    <section id="hot-spring" class="py-16 bg-gradient-to-br from-orange-50 to-red-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">温泉体验设施</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    集温泉酒店、温泉世界、餐饮娱乐于一体的综合温泉度假综合体
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- 温泉酒店 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+                    <div class="h-48 bg-gradient-to-br from-hot-spring-500 to-hot-spring-700 flex items-center justify-center">
+                        <i class="fas fa-hotel text-white text-4xl"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">温泉酒店</h3>
+                        <p class="text-gray-600 mb-4">104间客房的高端温泉酒店，为宾客提供舒适的住宿体验</p>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-500">客房数量</span>
+                                <span class="text-sm font-semibold">104间</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-500">建筑面积</span>
+                                <span class="text-sm font-semibold">18,000㎡</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 温泉世界 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+                    <div class="h-48 bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                        <i class="fas fa-swimming-pool text-white text-4xl"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">地下水世界</h3>
+                        <p class="text-gray-600 mb-4">大型地下温泉世界，52,532㎡的超大空间，多样化温泉体验</p>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-500">总面积</span>
+                                <span class="text-sm font-semibold">52,532㎡</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-500">设施类型</span>
+                                <span class="text-sm font-semibold">温泉世界</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 温泉区域 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+                    <div class="h-48 bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center">
+                        <i class="fas fa-spa text-white text-4xl"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">温泉区域</h3>
+                        <p class="text-gray-600 mb-4">VIP与普通温泉区域，6,000㎡的精致温泉空间</p>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-500">温泉面积</span>
+                                <span class="text-sm font-semibold">6,000㎡</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-500">区域类型</span>
+                                <span class="text-sm font-semibold">VIP+普通</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 餐饮配套 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+                    <div class="h-48 bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
+                        <i class="fas fa-utensils text-white text-4xl"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">顺峰餐饮</h3>
+                        <p class="text-gray-600 mb-4">高端餐饮配套，8,400㎡的餐饮空间，提供精致的美食体验</p>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-500">餐饮面积</span>
+                                <span class="text-sm font-semibold">8,400㎡</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-500">定位</span>
+                                <span class="text-sm font-semibold">高端餐饮</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 地下综合 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+                    <div class="h-48 bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center">
+                        <i class="fas fa-building text-white text-4xl"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">地下综合</h3>
+                        <p class="text-gray-600 mb-4">32,093㎡的地下综合区域，整合温泉、餐饮、酒店等功能</p>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-500">综合面积</span>
+                                <span class="text-sm font-semibold">32,093㎡</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-500">功能</span>
+                                <span class="text-sm font-semibold">综合配套</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 停车配套 -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+                    <div class="h-48 bg-gradient-to-br from-gray-500 to-gray-700 flex items-center justify-center">
+                        <i class="fas fa-parking text-white text-4xl"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">停车设施</h3>
+                        <p class="text-gray-600 mb-4">2.72万平米的地下车库，533个车位，满足停车需求</p>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-500">车库面积</span>
+                                <span class="text-sm font-semibold">2.72万㎡</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-500">车位数量</span>
+                                <span class="text-sm font-semibold">533个</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 资产详情 -->
+    <section id="details" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">资产详情分析</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    详细的资产配置分析，为投资决策提供数据支撑
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12">
+                <!-- 住宅产品分析 -->
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                        <i class="fas fa-home text-blue-500 mr-3"></i>
+                        住宅产品分析
+                    </h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-white rounded-xl p-4">
+                            <h4 class="font-semibold text-gray-900 mb-3">产品类型分布</h4>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600">改善型住宅 (300㎡以下)</span>
+                                    <div class="flex items-center">
+                                        <div class="w-24 bg-gray-200 rounded-full h-2 mr-3">
+                                            <div class="bg-blue-500 h-2 rounded-full" style="width: 22%"></div>
+                                        </div>
+                                        <span class="text-sm font-semibold">22%</span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600">顶级豪宅 (500-900㎡)</span>
+                                    <div class="flex items-center">
+                                        <div class="w-24 bg-gray-200 rounded-full h-2 mr-3">
+                                            <div class="bg-hot-spring-500 h-2 rounded-full" style="width: 50%"></div>
+                                        </div>
+                                        <span class="text-sm font-semibold">50.4%</span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600">超级豪宅 (900㎡以上)</span>
+                                    <div class="flex items-center">
+                                        <div class="w-24 bg-gray-200 rounded-full h-2 mr-3">
+                                            <div class="bg-luxury-gold-500 h-2 rounded-full" style="width: 28%"></div>
+                                        </div>
+                                        <span class="text-sm font-semibold">27.6%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-xl p-4">
+                            <h4 class="font-semibold text-gray-900 mb-3">关键指标</h4>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-blue-600">96</div>
+                                    <div class="text-sm text-gray-600">剩余套数</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-blue-600">5.13万</div>
+                                    <div class="text-sm text-gray-600">总面积(㎡)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 商业配套分析 -->
+                <div class="bg-gradient-to-br from-orange-50 to-red-100 rounded-2xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                        <i class="fas fa-building text-orange-500 mr-3"></i>
+                        商业配套分析
+                    </h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-white rounded-xl p-4">
+                            <h4 class="font-semibold text-gray-900 mb-3">商业面积构成</h4>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600">地下综合区域</span>
+                                    <div class="flex items-center">
+                                        <div class="w-24 bg-gray-200 rounded-full h-2 mr-3">
+                                            <div class="bg-orange-500 h-2 rounded-full" style="width: 38%"></div>
+                                        </div>
+                                        <span class="text-sm font-semibold">38%</span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600">地下水世界</span>
+                                    <div class="flex items-center">
+                                        <div class="w-24 bg-gray-200 rounded-full h-2 mr-3">
+                                            <div class="bg-blue-500 h-2 rounded-full" style="width: 62%"></div>
+                                        </div>
+                                        <span class="text-sm font-semibold">62%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-xl p-4">
+                            <h4 class="font-semibold text-gray-900 mb-3">温泉配套</h4>
+                            <div class="space-y-2">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">温泉酒店</span>
+                                    <span class="font-semibold">18,000㎡</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">温泉区域</span>
+                                    <span class="font-semibold">6,000㎡</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">餐饮配套</span>
+                                    <span class="font-semibold">8,400㎡</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 价格对比分析 -->
+            <div class="mt-12 bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-8">
+                <h3 class="text-2xl font-bold text-gray-900 mb-6 text-center">投资价值分析</h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-red-600 mb-2">27.37亿</div>
+                        <div class="text-gray-600 mb-2">当前变卖价格</div>
+                        <div class="text-sm text-gray-500">折合单价约5.3万/㎡</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-orange-600 mb-2">13-14万/㎡</div>
+                        <div class="text-gray-600 mb-2">潜在市场价格</div>
+                        <div class="text-sm text-gray-500">重新设计装修后预期</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-green-600 mb-2">20亿+</div>
+                        <div class="text-gray-600 mb-2">投资价值空间</div>
+                        <div class="text-sm text-gray-500">保守估算增值潜力</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 拍卖信息 -->
+    <section id="auction" class="py-16 bg-gray-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">拍卖信息</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    详细的拍卖规则和流程，确保透明公正的交易环境
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12">
+                <!-- 拍卖详情 -->
+                <div class="bg-gray-800 rounded-2xl p-8">
+                    <h3 class="text-2xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-gavel text-hot-spring-500 mr-3"></i>
+                        拍卖详情
+                    </h3>
+                    
+                    <div class="space-y-6">
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-300">当前状态</span>
+                            <span class="bg-hot-spring-500 text-white px-3 py-1 rounded-full text-sm">变卖阶段</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-300">变卖价格</span>
+                            <span class="text-2xl font-bold text-hot-spring-400">27.37亿元</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-300">资产评估</span>
+                            <span class="text-xl font-semibold text-gray-200">46.07亿元</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-gray-700">
+                            <span class="text-gray-300">建筑面积</span>
+                            <span class="text-xl font-semibold text-gray-200">18.24万㎡</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3">
+                            <span class="text-gray-300">占地面积</span>
+                            <span class="text-xl font-semibold text-gray-200">43.12万㎡</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 竞拍规则 -->
+                <div class="bg-gray-800 rounded-2xl p-8">
+                    <h3 class="text-2xl font-bold mb-6 flex items-center">
+                        <i class="fas fa-clipboard-list text-blue-400 mr-3"></i>
+                        竞拍规则
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold mr-3 mt-1">1</div>
+                            <div>
+                                <div class="font-semibold text-white">资格审核</div>
+                                <div class="text-gray-400 text-sm">具备相应资金实力的企业或个人</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold mr-3 mt-1">2</div>
+                            <div>
+                                <div class="font-semibold text-white">保证金缴纳</div>
+                                <div class="text-gray-400 text-sm">按变卖价格一定比例缴纳保证金</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold mr-3 mt-1">3</div>
+                            <div>
+                                <div class="font-semibold text-white">正式竞拍</div>
+                                <div class="text-gray-400 text-sm">在规定时间内完成竞拍流程</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold mr-3 mt-1">4</div>
+                            <div>
+                                <div class="font-semibold text-white">签约交割</div>
+                                <div class="text-gray-400 text-sm">竞拍成功后完成签约和资产交割</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 联系方式 -->
+            <div class="mt-12 bg-gray-800 rounded-2xl p-8 text-center">
+                <h3 class="text-2xl font-bold mb-6">联系我们</h3>
+                <p class="text-gray-300 mb-8">了解更多详情或预约实地考察，请联系我们的专业团队</p>
+                
+                <div class="grid md:grid-cols-3 gap-6 mb-8">
+                    <div class="flex items-center justify-center">
+                        <i class="fas fa-phone text-hot-spring-500 mr-3"></i>
+                        <div>
+                            <div class="font-semibold">咨询热线</div>
+                            <div class="text-gray-400">400-888-9999</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center">
+                        <i class="fas fa-envelope text-hot-spring-500 mr-3"></i>
+                        <div>
+                            <div class="font-semibold">邮箱联系</div>
+                            <div class="text-gray-400">auction@shijing.com</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center">
+                        <i class="fas fa-map-marker-alt text-hot-spring-500 mr-3"></i>
+                        <div>
+                            <div class="font-semibold">项目地址</div>
+                            <div class="text-gray-400">北京市朝阳区东四环与北四环交口</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button class="bg-hot-spring-500 hover:bg-hot-spring-600 text-white px-8 py-3 rounded-xl font-semibold transition">
+                        <i class="fas fa-calendar mr-2"></i>
+                        预约考察
+                    </button>
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold transition">
+                        <i class="fas fa-download mr-2"></i>
+                        下载资料
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 数字资产声明 -->
+    <section class="py-16 bg-gradient-to-br from-purple-900 to-blue-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">数字资产化说明</h2>
+                <p class="text-xl text-purple-200 max-w-3xl mx-auto">
+                    通过区块链技术，将实体温泉资产数字化，实现资产确权、透明流转和价值保护
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 mb-12">
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-shield-alt text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">资产确权</h3>
+                    <p class="text-purple-200">通过NFT技术确保温泉资产的唯一性和不可篡改性，为投资提供法律保障</p>
+                </div>
+                
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center">
+                    <div class="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-link text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">链上流转</h3>
+                    <p class="text-purple-200">支持在华为云数字资产链上进行安全透明的资产转移和交易记录</p>
+                </div>
+                
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center">
+                    <div class="w-16 h-16 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-chart-pie text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">价值保护</h3>
+                    <p class="text-purple-200">数字化确权保护温泉资产价值，支持权益分割和分布式持有</p>
+                </div>
+            </div>
+
+            <!-- NFT验证按钮 -->
+            <div class="text-center">
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 max-w-2xl mx-auto">
+                    <h3 class="text-2xl font-bold mb-4">数字资产凭证</h3>
+                    <p class="text-purple-200 mb-6">
+                        点击下方按钮，连接华为云数字资产链，验证温泉资产的NFT凭证信息
+                    </p>
+                    <button onclick="verifyNFT()" class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition flex items-center justify-center mx-auto">
+                        <i class="fas fa-certificate mr-3"></i>
+                        验证数字资产凭证
+                    </button>
+                    <p class="text-sm text-purple-300 mt-4">
+                        未来将集成华为云数字资产链API，实现实时NFT验证和资产状态查询
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="md:col-span-2">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-8 h-8 bg-gradient-to-br from-hot-spring-500 to-hot-spring-700 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-spa text-white text-sm"></i>
+                        </div>
+                        <span class="text-xl font-bold">顺景·石上清泉</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        北京四环内唯一温泉豪宅项目，融合住宅、商业、温泉、酒店的综合体型资产。
+                        通过数字化创新，为投资者提供全新的资产配置选择。
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-weixin text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-weibo text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-linkedin text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">快速链接</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#overview" class="hover:text-white transition">资产概览</a></li>
+                        <li><a href="#hot-spring" class="hover:text-white transition">温泉体验</a></li>
+                        <li><a href="#details" class="hover:text-white transition">资产详情</a></li>
+                        <li><a href="#auction" class="hover:text-white transition">拍卖信息</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">联系我们</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>咨询热线：400-888-9999</li>
+                        <li>邮箱：auction@shijing.com</li>
+                        <li>地址：北京市朝阳区东四环与北四环交口</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 顺景·石上清泉数字资产项目. 版权所有 | 本页面为实体资产的数字映射展示</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // 平滑滚动
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.classList.add('bg-white/95');
+                nav.classList.remove('bg-white/90');
+            } else {
+                nav.classList.add('bg-white/90');
+                nav.classList.remove('bg-white/95');
+            }
+        });
+
+        // 数字动画效果
+        function animateNumbers() {
+            const counters = document.querySelectorAll('.data-counter');
+            counters.forEach(counter => {
+                const target = parseFloat(counter.textContent);
+                const increment = target / 100;
+                let current = 0;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    counter.textContent = current.toFixed(2);
+                }, 20);
+            });
+        }
+
+        // 观察器：当元素进入视窗时触发动画
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (entry.target.classList.contains('data-counter')) {
+                        animateNumbers();
+                    }
+                }
+            });
+        });
+
+        // 观察所有计数器元素
+        document.querySelectorAll('.data-counter').forEach(el => {
+            observer.observe(el);
+        });
+
+        // NFT验证功能（预留华为云数字资产链API接口）
+        function verifyNFT() {
+            // TODO: 集成华为云数字资产链API
+            // 示例API调用结构：
+            /*
+            fetch('https://api.huaweicloud.com/digital-assets/verify', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify({
+                    asset_id: 'SHISHANG_2024_001',
+                    asset_type: 'hot_spring_property',
+                    blockchain: 'huawei_digital_assets'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.verified) {
+                    showNFTModal(data.nft_info);
+                } else {
+                    alert('NFT验证失败，请稍后重试');
+                }
+            })
+            .catch(error => {
+                console.error('NFT验证错误:', error);
+                alert('网络错误，请稍后重试');
+            });
+            */
+            
+            // 临时演示效果
+            alert('正在连接华为云数字资产链...\n\n未来将集成真实的NFT验证接口，显示：\n• 温泉资产的数字凭证\n• 区块链交易记录\n• 资产确权信息\n• 持有者权益证明');
+        }
+
+        // 显示NFT信息的模态框（未来实现）
+        function showNFTModal(nftInfo) {
+            // TODO: 实现NFT信息展示模态框
+            console.log('NFT信息:', nftInfo);
+        }
+
+        // 移动端菜单切换
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.querySelector('.md\\:hidden button');
+            const mobileMenu = document.createElement('div');
+            mobileMenu.className = 'hidden md:hidden bg-white border-t border-gray-200';
+            mobileMenu.innerHTML = `
+                <div class="px-4 py-4 space-y-3">
+                    <a href="#overview" class="block text-gray-600 hover:text-hot-spring-600">资产概览</a>
+                    <a href="#hot-spring" class="block text-gray-600 hover:text-hot-spring-600">温泉体验</a>
+                    <a href="#details" class="block text-gray-600 hover:text-hot-spring-600">资产详情</a>
+                    <a href="#auction" class="block text-gray-600 hover:text-hot-spring-600">拍卖信息</a>
+                </div>
+            `;
+            
+            if (mobileMenuButton) {
+                mobileMenuButton.parentNode.parentNode.appendChild(mobileMenu);
+                
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
